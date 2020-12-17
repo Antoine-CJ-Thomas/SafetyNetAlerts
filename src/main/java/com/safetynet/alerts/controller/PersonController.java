@@ -10,32 +10,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safetynet.alerts.dto.PersonDTO;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.service.PersonService;
 
 @RestController
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+	@Autowired
+	private PersonService personService;
 
-    @GetMapping("/person")
-    public ArrayList<Person> getPersonList() {
-        return personService.getPersonList();
-    }
+	private static PersonDTO personDTO;
 
-    @PostMapping("/person")
-    public Person addPerson(@RequestBody Person product) {   	
-        return personService.addPerson();
-    }
+	public PersonController(PersonDTO personDTO) {
+		PersonController.personDTO = personDTO;
+	}
 
-    @PatchMapping("/person")
-    public Person updatePerson(@RequestBody Person product) {   	
-        return personService.updatePerson();
-    }
+	@GetMapping("/person")
+	public ArrayList<Person> getPersonList() {
+		return personService.getPersonList(personDTO);
+	}
 
-    @DeleteMapping("/person")
-    public Person removePerson(@RequestBody String firstname, String lastName) {   
-        return personService.removePerson();
-    }
+	@PostMapping("/person")
+	public Person addPerson(@RequestBody Person person) {
+		return personService.addPerson(personDTO, person);
+	}
+
+	@PatchMapping("/person")
+	public Person updatePerson(@RequestBody Person person) {
+		return personService.updatePerson(personDTO, person);
+	}
+
+	@DeleteMapping("/person")
+	public Person removePerson(@RequestBody Person person) {
+		return personService.removePerson(personDTO, person);
+	}
 }

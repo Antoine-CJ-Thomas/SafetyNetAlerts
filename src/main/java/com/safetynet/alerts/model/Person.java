@@ -1,7 +1,7 @@
 package com.safetynet.alerts.model;
 
 public class Person {
-	
+
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -10,7 +10,8 @@ public class Person {
 	private String phone;
 	private String email;
 
-	public Person(String firstName, String lastName, String address, String city, String zip, String phone, String email) {
+	public Person(String firstName, String lastName, String address, String city, String zip, String phone,
+			String email) {
 
 		this.firstName = firstName;
 		this.lastName = lastName;

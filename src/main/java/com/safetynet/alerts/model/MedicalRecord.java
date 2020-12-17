@@ -1,17 +1,17 @@
 package com.safetynet.alerts.model;
 
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
-public class MedicalRecords {
+public class MedicalRecord {
 
 	private String firstName;
 	private String lastName;
-	private Date birthdate;
-	private List<String> medications;
-	private List<String> allergies;
-	
-	public MedicalRecords(String firstName, String lastName, Date birthdate, List<String> medications, List<String> allergies) {
+	private String birthdate;
+	private ArrayList<String> medications;
+	private ArrayList<String> allergies;
+
+	public MedicalRecord(String firstName, String lastName, String birthdate, ArrayList<String> medications,
+			ArrayList<String> allergies) {
 
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -36,28 +36,28 @@ public class MedicalRecords {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 
-	public List<String> getMedications() {
+	public ArrayList<String> getMedications() {
 		return medications;
 	}
 
-	public void setMedications(List<String> medications) {
+	public void setMedications(ArrayList<String> medications) {
 		this.medications = medications;
 	}
 
-	public List<String> getAllergies() {
+	public ArrayList<String> getAllergies() {
 		return allergies;
 	}
 
-	public void setAllergies(List<String> allergies) {
+	public void setAllergies(ArrayList<String> allergies) {
 		this.allergies = allergies;
 	}
-	
+
 }
