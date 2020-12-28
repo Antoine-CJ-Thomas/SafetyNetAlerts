@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +36,7 @@ public class MedicalRecordController {
 		return medicalRecordService.addMedicalRecord(medicalRecordDTO, medicalRecord);
 	}
 
-	@PatchMapping("/medicalRecord")
+	@PutMapping("/medicalRecord")
 	public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 		return medicalRecordService.updateMedicalRecord(medicalRecordDTO, medicalRecord);
 	}

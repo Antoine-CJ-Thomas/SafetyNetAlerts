@@ -15,30 +15,36 @@ public class PersonService {
 	}
 
 	public Person addPerson(PersonDTO personDTO, Person person) {
-		personDTO.addPerson(person);
-		return person;
+		return personDTO.addPerson(person);
 	}
 
 	public Person updatePerson(PersonDTO personDTO, Person person) {
-		personDTO.updatePerson(person);
-		return person;
+
+		Person updatedPerson = null;
+		
+		for (Person p : personDTO.getPersonList()) {
+
+			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
+				updatedPerson = p;
+				break;
+			}
+		}		
+		return personDTO.updatePerson(personDTO.getPersonList().indexOf(updatedPerson), person);
+		
 	}
 
 	public Person removePerson(PersonDTO personDTO, Person person) {
 
-		ArrayList<Person> personList = personDTO.getPersonList();
 		Person deletedPerson = null;
 
-		for (Person p : personList) {
+		for (Person p : personDTO.getPersonList()) {
 
 			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-
-				personDTO.removePerson(p);
 				deletedPerson = p;
 				break;
 			}
 		}
-		return deletedPerson;
+		return personDTO.removePerson(deletedPerson);
 	}
 
 	public ArrayList<String> getEmailList(PersonDTO personDTO) {

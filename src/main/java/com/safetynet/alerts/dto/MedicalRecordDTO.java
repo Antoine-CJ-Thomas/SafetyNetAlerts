@@ -15,15 +15,18 @@ public class MedicalRecordDTO {
 		return medicalRecords;
 	}
 
-	public void addMedicalRecord(MedicalRecord medicalRecord) {
+	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
 		medicalRecords.add(medicalRecord);
+		return medicalRecord;
 	}
 
-	public void updateMedicalRecord(MedicalRecord medicalRecord) {
-
+	public MedicalRecord updateMedicalRecord(int index, MedicalRecord medicalRecord) {
+		medicalRecords.set(index, medicalRecord);
+		return medicalRecord;
 	}
 
-	public void removeMedicalRecord(MedicalRecord medicalRecord) {
+	public MedicalRecord removeMedicalRecord(MedicalRecord medicalRecord) {
 		medicalRecords.remove(medicalRecord);
+		return medicalRecord;
 	}
 }

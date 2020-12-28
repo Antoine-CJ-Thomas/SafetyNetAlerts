@@ -15,15 +15,18 @@ public class FireStationDTO {
 		return fireStations;
 	}
 
-	public void addFireStation(FireStation fireStation) {
+	public FireStation addFireStation(FireStation fireStation) {
 		fireStations.add(fireStation);
+		return fireStation;
 	}
 
-	public void updateFireStation(FireStation fireStation) {
-
+	public FireStation updateFireStation(int index, FireStation fireStation) {
+		fireStations.set(index, fireStation);
+		return fireStation;
 	}
 
-	public void removeFireStation(FireStation fireStation) {
+	public FireStation removeFireStation(FireStation fireStation) {
 		fireStations.remove(fireStation);
+		return fireStation;
 	}
 }

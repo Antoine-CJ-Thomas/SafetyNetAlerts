@@ -15,29 +15,34 @@ public class MedicalRecordService {
 	}
 
 	public MedicalRecord addMedicalRecord(MedicalRecordDTO medicalRecordDTO, MedicalRecord medicalRecord) {
-		medicalRecordDTO.addMedicalRecord(medicalRecord);
-		return medicalRecord;
+		return medicalRecordDTO.addMedicalRecord(medicalRecord);
 	}
 
 	public MedicalRecord updateMedicalRecord(MedicalRecordDTO medicalRecordDTO, MedicalRecord medicalRecord) {
-		medicalRecordDTO.updateMedicalRecord(medicalRecord);
-		return medicalRecord;
+
+		MedicalRecord updatedMedicalRecord = null;
+		
+		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
+
+			if (m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
+				updatedMedicalRecord = m;
+				break;
+			}
+		}		
+		return medicalRecordDTO.updateMedicalRecord(medicalRecordDTO.getMedicalRecordList().indexOf(updatedMedicalRecord), medicalRecord);
 	}
 
 	public MedicalRecord removeMedicalRecord(MedicalRecordDTO medicalRecordDTO, MedicalRecord medicalRecord) {
 
-		ArrayList<MedicalRecord> medicalRecordList = medicalRecordDTO.getMedicalRecordList();
 		MedicalRecord deletedMedicalRecord = null;
 
-		for (MedicalRecord m : medicalRecordList) {
+		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
 
-			if (m.equals(medicalRecord)) {
-
-				medicalRecordDTO.removeMedicalRecord(m);
+			if (m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
 				deletedMedicalRecord = m;
 				break;
 			}
 		}
-		return deletedMedicalRecord;
+		return medicalRecordDTO.removeMedicalRecord(deletedMedicalRecord);
 	}
 }

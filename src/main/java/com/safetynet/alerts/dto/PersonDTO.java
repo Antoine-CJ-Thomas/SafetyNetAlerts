@@ -15,15 +15,18 @@ public class PersonDTO {
 		return persons;
 	}
 
-	public void addPerson(Person person) {
+	public Person addPerson(Person person) {
 		persons.add(person);
+		return person;
 	}
 
-	public void updatePerson(Person person) {
-
+	public Person updatePerson(int index, Person person) {
+		persons.set(index, person);
+		return person;
 	}
 
-	public void removePerson(Person person) {
+	public Person removePerson(Person person) {
 		persons.remove(person);
+		return person;
 	}
 }

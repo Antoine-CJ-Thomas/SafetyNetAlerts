@@ -15,29 +15,34 @@ public class FireStationService {
 	}
 
 	public FireStation addFireStation(FireStationDTO fireStationDTO, FireStation fireStation) {
-		fireStationDTO.addFireStation(fireStation);
-		return fireStation;
+		return fireStationDTO.addFireStation(fireStation);
 	}
 
 	public FireStation updateFireStation(FireStationDTO fireStationDTO, FireStation fireStation) {
-		fireStationDTO.updateFireStation(fireStation);
-		return fireStation;
+
+		FireStation updatedFireStation = null;
+		
+		for (FireStation f : fireStationDTO.getFireStationList()) {
+
+			if (f.getAddress().equals(fireStation.getAddress())) {
+				updatedFireStation = f;
+				break;
+			}
+		}		
+		return fireStationDTO.updateFireStation(fireStationDTO.getFireStationList().indexOf(updatedFireStation), fireStation);
 	}
 
 	public FireStation removeFireStation(FireStationDTO fireStationDTO, FireStation fireStation) {
 
-		ArrayList<FireStation> fireStationList = fireStationDTO.getFireStationList();
 		FireStation deletedFireStation = null;
 
-		for (FireStation f : fireStationList) {
+		for (FireStation f : fireStationDTO.getFireStationList()) {
 
-			if (f.equals(fireStation)) {
-
-				fireStationDTO.removeFireStation(f);
+			if (f.getAddress().equals(fireStation.getAddress())) {
 				deletedFireStation = f;
 				break;
 			}
 		}
-		return deletedFireStation;
+		return fireStationDTO.removeFireStation(deletedFireStation);
 	}
 }
