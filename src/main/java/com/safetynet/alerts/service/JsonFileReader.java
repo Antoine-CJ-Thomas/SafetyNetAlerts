@@ -17,16 +17,16 @@ import com.safetynet.alerts.model.Person;
 public class JsonFileReader {
 
 	private String filePath;
-	private PersonDTO personDAO;
-	private FireStationDTO fireStationDAO;
-	private MedicalRecordDTO medicalRecordDAO;
+	private PersonDTO personDTO;
+	private FireStationDTO fireStationDTO;
+	private MedicalRecordDTO medicalRecordDTO;
 
 	public JsonFileReader(String filePath, PersonDTO personDTO, FireStationDTO fireStationDTO,
 			MedicalRecordDTO medicalRecordDTO) {
 		this.filePath = filePath;
-		this.personDAO = personDTO;
-		this.fireStationDAO = fireStationDTO;
-		this.medicalRecordDAO = medicalRecordDTO;
+		this.personDTO = personDTO;
+		this.fireStationDTO = fireStationDTO;
+		this.medicalRecordDTO = medicalRecordDTO;
 	}
 
 	public void readFile() {
@@ -44,16 +44,16 @@ public class JsonFileReader {
 		}
 
 		Any personAny = any.get("persons");
-		personAny.forEach(a -> personDAO.addPerson(new Person(a.get("firstName").toString(),
+		personAny.forEach(a -> personDTO.addPerson(new Person(a.get("firstName").toString(),
 				a.get("lastName").toString(), a.get("address").toString(), a.get("city").toString(),
 				a.get("zip").toString(), a.get("phone").toString(), a.get("email").toString())));
 
 		Any fireStationAny = any.get("firestations");
-		fireStationAny.forEach(a -> fireStationDAO
+		fireStationAny.forEach(a -> fireStationDTO
 				.addFireStation(new FireStation(a.get("address").toString(), a.get("station").toString())));
 
 		Any medicalRecordsAny = any.get("medicalrecords");
-		medicalRecordsAny.forEach(a -> medicalRecordDAO
+		medicalRecordsAny.forEach(a -> medicalRecordDTO
 				.addMedicalRecord(new MedicalRecord(a.get("firstName").toString(), a.get("lastName").toString(),
 						a.get("birthdate").toString(), extractMedications(a), extractAllergies(a))));
 	}
