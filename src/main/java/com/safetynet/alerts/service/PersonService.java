@@ -46,16 +46,4 @@ public class PersonService {
 		}
 		return personDTO.removePerson(deletedPerson);
 	}
-
-	public ArrayList<String> getEmailList(PersonDTO personDTO) {
-
-		ArrayList<Person> personList = personDTO.getPersonList();
-		ArrayList<String> emailList = new ArrayList<String>();
-
-		for (Person p : personList) {
-
-			emailList.add(p.getEmail());
-		}
-		return emailList;
-	}
 }

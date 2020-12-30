@@ -21,8 +21,7 @@ public class JsonFileReader {
 	private FireStationDTO fireStationDTO;
 	private MedicalRecordDTO medicalRecordDTO;
 
-	public JsonFileReader(String filePath, PersonDTO personDTO, FireStationDTO fireStationDTO,
-			MedicalRecordDTO medicalRecordDTO) {
+	public JsonFileReader(String filePath, PersonDTO personDTO, FireStationDTO fireStationDTO, MedicalRecordDTO medicalRecordDTO) {
 		this.filePath = filePath;
 		this.personDTO = personDTO;
 		this.fireStationDTO = fireStationDTO;

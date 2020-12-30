@@ -3,6 +3,7 @@ package com.safetynet.alerts.service;
 
 import org.springframework.stereotype.Service;
 
+import com.safetynet.alerts.controller.CrossController;
 import com.safetynet.alerts.controller.FireStationController;
 import com.safetynet.alerts.controller.MedicalRecordController;
 import com.safetynet.alerts.controller.PersonController;
@@ -26,6 +27,7 @@ public class LaunchService {
 		PersonController personController = new PersonController(personDAO);
 		FireStationController fireStationController = new FireStationController(fireStationDAO);
 		MedicalRecordController medicalRecordController = new MedicalRecordController(medicalRecordDAO);
+		CrossController crossController = new CrossController(personDAO, fireStationDAO, medicalRecordDAO);
 
 		jsonFileReader.readFile();
 	}
