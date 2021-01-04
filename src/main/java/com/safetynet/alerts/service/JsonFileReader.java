@@ -22,7 +22,7 @@ public class JsonFileReader {
 	private MedicalRecordRepository medicalRecordRepository;
 
 	public JsonFileReader(String filePath, PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
-		
+	
 		this.filePath = filePath;
 		this.personRepository = personRepository;
 		this.fireStationRepository = fireStationRepository;
