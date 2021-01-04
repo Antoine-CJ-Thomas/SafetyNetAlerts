@@ -16,7 +16,7 @@ public class FirestationCoverageDTO {
 		this.station = station;
 	}
 
-	public void addPerson(String firstName, String lastName, String address, String phone) {
+	public void addContact(String firstName, String lastName, String address, String phone) {
 		contacts.add(new ContactDTO(firstName, lastName, address, phone));
 	}
 

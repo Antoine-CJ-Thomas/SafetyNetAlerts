@@ -21,6 +21,39 @@ public class PersonService {
 	public ArrayList<Person> getPersonList(PersonRepository personRepository) {
 		return personRepository.getPersonList();
 	}
+
+	public Person addPerson(PersonRepository personRepository, Person person) {
+		return personRepository.addPerson(person);
+	}
+
+	public Person updatePerson(PersonRepository personRepository, Person person) {
+
+		Person updatedPerson = null;
+		
+		for (Person p : personRepository.getPersonList()) {
+
+			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
+				updatedPerson = p;
+				break;
+			}
+		}		
+		return personRepository.updatePerson(personRepository.getPersonList().indexOf(updatedPerson), person);
+		
+	}
+
+	public Person removePerson(PersonRepository personRepository, Person person) {
+
+		Person deletedPerson = null;
+
+		for (Person p : personRepository.getPersonList()) {
+
+			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
+				deletedPerson = p;
+				break;
+			}
+		}
+		return personRepository.removePerson(deletedPerson);
+	}
 	
 	public ArrayList<String> getPhoneList(PersonRepository personRepository, FireStationRepository fireStationRepository, String firestation) {
 
@@ -139,38 +172,5 @@ public class PersonService {
 		}
 		
 		return JsonStream.serialize(childAlertResponse);
-	}
-
-	public Person addPerson(PersonRepository personRepository, Person person) {
-		return personRepository.addPerson(person);
-	}
-
-	public Person updatePerson(PersonRepository personRepository, Person person) {
-
-		Person updatedPerson = null;
-		
-		for (Person p : personRepository.getPersonList()) {
-
-			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-				updatedPerson = p;
-				break;
-			}
-		}		
-		return personRepository.updatePerson(personRepository.getPersonList().indexOf(updatedPerson), person);
-		
-	}
-
-	public Person removePerson(PersonRepository personRepository, Person person) {
-
-		Person deletedPerson = null;
-
-		for (Person p : personRepository.getPersonList()) {
-
-			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-				deletedPerson = p;
-				break;
-			}
-		}
-		return personRepository.removePerson(deletedPerson);
 	}
 }
