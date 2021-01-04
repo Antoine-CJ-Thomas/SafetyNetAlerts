@@ -53,11 +53,6 @@ public class PersonController {
 		return personService.removePerson(personRepository, person);
 	}
 
-	@GetMapping("/personInfo/{name}")
-	public String personInfo(@PathVariable("name") final String name) {
-		return personService.getPersonInfo(personRepository, medicalRecordRepository, name);
-	}
-
 	@GetMapping("/communityEmail/{city}")
 	public ArrayList<String> communityEmail(@PathVariable("city") final String city) {
 		return personService.getCommunityEmailList(personRepository, city);

@@ -60,27 +60,6 @@ public class PersonService {
 		return emailList;
 	}
 	
-	public String getPersonInfo(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, String name) {
-
-	    String[] namePart = name.split(" ");
-	    
-		String firstName = namePart[0];
-		String lastName = namePart[1];
-		
-		PersonInfoDTO personInfoResponse = new PersonInfoDTO(firstName, lastName);
-		MedicalRecordService medicalRecordService = new MedicalRecordService();
-		
-		for (Person p : personRepository.getPersonList()) {
-
-			if (p.getLastName().equals(lastName)) {
-				
-				personInfoResponse.addPersonInfo(p.getLastName(), p.getAddress(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName()));	
-	
-			}
-		}
-		return JsonStream.serialize(personInfoResponse);
-	}
-	
 	public String getFireInfo(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String adress) {
 		
 		String stationNumber = null;

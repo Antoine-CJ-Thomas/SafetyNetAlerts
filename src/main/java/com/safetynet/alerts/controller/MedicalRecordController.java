@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,5 +51,10 @@ public class MedicalRecordController {
 	@DeleteMapping("/medicalRecord")
 	public MedicalRecord removeMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 		return medicalRecordService.removeMedicalRecord(medicalRecordRepository, medicalRecord);
+	}
+
+	@GetMapping("/personInfo/{name}")
+	public String personInfo(@PathVariable("name") final String name) {
+		return medicalRecordService.getPersonInfo(personRepository, medicalRecordRepository, name);
 	}
 }

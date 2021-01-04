@@ -7,8 +7,12 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
+import com.jsoniter.output.JsonStream;
+import com.safetynet.alerts.dto.PersonInfoDTO;
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
+import com.safetynet.alerts.repository.PersonRepository;
 
 @Service
 public class MedicalRecordService {
@@ -93,5 +97,26 @@ public class MedicalRecordService {
 			}
 		}
 		return medicalRecordRepository.removeMedicalRecord(deletedMedicalRecord);
+	}
+	
+	public String getPersonInfo(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, String name) {
+
+	    String[] namePart = name.split(" ");
+	    
+		String firstName = namePart[0];
+		String lastName = namePart[1];
+		
+		PersonInfoDTO personInfoResponse = new PersonInfoDTO(firstName, lastName);
+		MedicalRecordService medicalRecordService = new MedicalRecordService();
+		
+		for (Person p : personRepository.getPersonList()) {
+
+			if (p.getLastName().equals(lastName)) {
+				
+				personInfoResponse.addPersonInfo(p.getLastName(), p.getAddress(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName()));	
+	
+			}
+		}
+		return JsonStream.serialize(personInfoResponse);
 	}
 }
