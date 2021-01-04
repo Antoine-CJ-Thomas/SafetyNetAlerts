@@ -21,8 +21,12 @@ public class JsonFileReader {
 	private FireStationRepository fireStationRepository;
 	private MedicalRecordRepository medicalRecordRepository;
 
+<<<<<<< HEAD
 	public JsonFileReader(String filePath, PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
 		
+=======
+	public JsonFileReader(String filePath, PersonDTO personDTO, FireStationDTO fireStationDTO, MedicalRecordDTO medicalRecordDTO) {
+>>>>>>> refs/remotes/origin/develop
 		this.filePath = filePath;
 		this.personRepository = personRepository;
 		this.fireStationRepository = fireStationRepository;

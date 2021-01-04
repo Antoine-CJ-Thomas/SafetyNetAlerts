@@ -192,6 +192,10 @@ public class PersonService {
 				break;
 			}
 		}
+<<<<<<< HEAD
 		return personRepository.removePerson(deletedPerson);
+=======
+		return personDTO.removePerson(deletedPerson);
+>>>>>>> refs/remotes/origin/develop
 	}
 }
