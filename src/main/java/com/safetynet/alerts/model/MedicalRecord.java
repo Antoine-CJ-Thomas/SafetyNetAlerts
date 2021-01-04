@@ -10,8 +10,7 @@ public class MedicalRecord {
 	private ArrayList<String> medications;
 	private ArrayList<String> allergies;
 
-	public MedicalRecord(String firstName, String lastName, String birthdate, ArrayList<String> medications,
-			ArrayList<String> allergies) {
+	public MedicalRecord(String firstName, String lastName, String birthdate, ArrayList<String> medications, ArrayList<String> allergies) {
 
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -59,5 +58,4 @@ public class MedicalRecord {
 	public void setAllergies(ArrayList<String> allergies) {
 		this.allergies = allergies;
 	}
-
 }

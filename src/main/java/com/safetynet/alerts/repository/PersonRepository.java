@@ -1,4 +1,4 @@
-package com.safetynet.alerts.dto;
+package com.safetynet.alerts.repository;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.safetynet.alerts.model.Person;
 
 @Component
-public class PersonDTO {
+public class PersonRepository {
 
 	private ArrayList<Person> persons = new ArrayList<Person>();
 

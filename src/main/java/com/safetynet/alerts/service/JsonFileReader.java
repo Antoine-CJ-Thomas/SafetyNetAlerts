@@ -7,25 +7,26 @@ import java.util.ArrayList;
 
 import com.jsoniter.JsonIterator;
 import com.jsoniter.any.Any;
-import com.safetynet.alerts.dto.FireStationDTO;
-import com.safetynet.alerts.dto.MedicalRecordDTO;
-import com.safetynet.alerts.dto.PersonDTO;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.repository.FireStationRepository;
+import com.safetynet.alerts.repository.MedicalRecordRepository;
+import com.safetynet.alerts.repository.PersonRepository;
 
 public class JsonFileReader {
 
 	private String filePath;
-	private PersonDTO personDTO;
-	private FireStationDTO fireStationDTO;
-	private MedicalRecordDTO medicalRecordDTO;
+	private PersonRepository personRepository;
+	private FireStationRepository fireStationRepository;
+	private MedicalRecordRepository medicalRecordRepository;
 
-	public JsonFileReader(String filePath, PersonDTO personDTO, FireStationDTO fireStationDTO, MedicalRecordDTO medicalRecordDTO) {
+	public JsonFileReader(String filePath, PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
+		
 		this.filePath = filePath;
-		this.personDTO = personDTO;
-		this.fireStationDTO = fireStationDTO;
-		this.medicalRecordDTO = medicalRecordDTO;
+		this.personRepository = personRepository;
+		this.fireStationRepository = fireStationRepository;
+		this.medicalRecordRepository = medicalRecordRepository;
 	}
 
 	public void readFile() {
@@ -43,16 +44,16 @@ public class JsonFileReader {
 		}
 
 		Any personAny = any.get("persons");
-		personAny.forEach(a -> personDTO.addPerson(new Person(a.get("firstName").toString(),
+		personAny.forEach(a -> personRepository.addPerson(new Person(a.get("firstName").toString(),
 				a.get("lastName").toString(), a.get("address").toString(), a.get("city").toString(),
 				a.get("zip").toString(), a.get("phone").toString(), a.get("email").toString())));
 
 		Any fireStationAny = any.get("firestations");
-		fireStationAny.forEach(a -> fireStationDTO
+		fireStationAny.forEach(a -> fireStationRepository
 				.addFireStation(new FireStation(a.get("address").toString(), a.get("station").toString())));
 
 		Any medicalRecordsAny = any.get("medicalrecords");
-		medicalRecordsAny.forEach(a -> medicalRecordDTO
+		medicalRecordsAny.forEach(a -> medicalRecordRepository
 				.addMedicalRecord(new MedicalRecord(a.get("firstName").toString(), a.get("lastName").toString(),
 						a.get("birthdate").toString(), extractMedications(a), extractAllergies(a))));
 	}

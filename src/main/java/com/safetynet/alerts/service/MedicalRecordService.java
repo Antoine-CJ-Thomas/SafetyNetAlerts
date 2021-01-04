@@ -7,23 +7,23 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
-import com.safetynet.alerts.dto.MedicalRecordDTO;
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.repository.MedicalRecordRepository;
 
 @Service
 public class MedicalRecordService {
 
-	public ArrayList<MedicalRecord> getMedicalRecordList(MedicalRecordDTO medicalRecordDTO) {
-		return medicalRecordDTO.getMedicalRecordList();
+	public ArrayList<MedicalRecord> getMedicalRecordList(MedicalRecordRepository medicalRecordRepository) {
+		return medicalRecordRepository.getMedicalRecordList();
 	}
 	
-	public String getAge(MedicalRecordDTO medicalRecordDTO, String firstName, String lastName) {
+	public String getAge(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
 
 		LocalDate birthdate = null;
 		LocalDate now = LocalDate.now();
 	    String age = null;
 		
-		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
+		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(firstName) && m.getLastName().equals(lastName)) {
 				
@@ -35,11 +35,11 @@ public class MedicalRecordService {
 		return age;
 	}
 	
-	public ArrayList<String> getMedicationList(MedicalRecordDTO medicalRecordDTO, String firstName, String lastName) {
+	public ArrayList<String> getMedicationList(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
 
 		ArrayList<String> medications = null;
 		
-		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
+		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(firstName) && m.getLastName().equals(lastName)) {
 				medications = m.getMedications();
@@ -49,11 +49,11 @@ public class MedicalRecordService {
 		return medications;
 	}
 	
-	public ArrayList<String> getAllergieList(MedicalRecordDTO medicalRecordDTO, String firstName, String lastName) {
+	public ArrayList<String> getAllergieList(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
 
 		ArrayList<String> allergies = null;
 		
-		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
+		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(firstName) && m.getLastName().equals(lastName)) {
 				allergies = m.getAllergies();
@@ -63,35 +63,35 @@ public class MedicalRecordService {
 		return allergies;
 	}
 
-	public MedicalRecord addMedicalRecord(MedicalRecordDTO medicalRecordDTO, MedicalRecord medicalRecord) {
-		return medicalRecordDTO.addMedicalRecord(medicalRecord);
+	public MedicalRecord addMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
+		return medicalRecordRepository.addMedicalRecord(medicalRecord);
 	}
 
-	public MedicalRecord updateMedicalRecord(MedicalRecordDTO medicalRecordDTO, MedicalRecord medicalRecord) {
+	public MedicalRecord updateMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
 
 		MedicalRecord updatedMedicalRecord = null;
 		
-		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
+		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
 				updatedMedicalRecord = m;
 				break;
 			}
 		}		
-		return medicalRecordDTO.updateMedicalRecord(medicalRecordDTO.getMedicalRecordList().indexOf(updatedMedicalRecord), medicalRecord);
+		return medicalRecordRepository.updateMedicalRecord(medicalRecordRepository.getMedicalRecordList().indexOf(updatedMedicalRecord), medicalRecord);
 	}
 
-	public MedicalRecord removeMedicalRecord(MedicalRecordDTO medicalRecordDTO, MedicalRecord medicalRecord) {
+	public MedicalRecord removeMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
 
 		MedicalRecord deletedMedicalRecord = null;
 
-		for (MedicalRecord m : medicalRecordDTO.getMedicalRecordList()) {
+		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
 				deletedMedicalRecord = m;
 				break;
 			}
 		}
-		return medicalRecordDTO.removeMedicalRecord(deletedMedicalRecord);
+		return medicalRecordRepository.removeMedicalRecord(deletedMedicalRecord);
 	}
 }
