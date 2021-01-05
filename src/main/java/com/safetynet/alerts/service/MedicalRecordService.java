@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.jsoniter.output.JsonStream;
@@ -17,11 +19,15 @@ import com.safetynet.alerts.repository.PersonRepository;
 @Service
 public class MedicalRecordService {
 
+    private static final Logger logger = LogManager.getLogger("MedicalRecordService");
+
 	public ArrayList<MedicalRecord> getMedicalRecordList(MedicalRecordRepository medicalRecordRepository) {
+        logger.info("getMedicalRecordList(" + medicalRecordRepository + ")");
 		return medicalRecordRepository.getMedicalRecordList();
 	}
 	
 	public String getAge(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
+        logger.info("getAge(" + medicalRecordRepository + ", " + firstName + ", " + lastName + ")");
 
 		LocalDate birthdate = null;
 		LocalDate now = LocalDate.now();
@@ -40,6 +46,7 @@ public class MedicalRecordService {
 	}
 	
 	public ArrayList<String> getMedicationList(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
+        logger.info("getMedicationList(" + medicalRecordRepository + ", " + firstName + ", " + lastName + ")");
 
 		ArrayList<String> medications = null;
 		
@@ -54,6 +61,7 @@ public class MedicalRecordService {
 	}
 	
 	public ArrayList<String> getAllergieList(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
+        logger.info("getAllergieList(" + medicalRecordRepository + ", " + firstName + ", " + lastName + ")");
 
 		ArrayList<String> allergies = null;
 		
@@ -68,10 +76,12 @@ public class MedicalRecordService {
 	}
 
 	public MedicalRecord addMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
+        logger.info("addMedicalRecord(" + medicalRecordRepository + ", " + medicalRecord + ")");
 		return medicalRecordRepository.addMedicalRecord(medicalRecord);
 	}
 
 	public MedicalRecord updateMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
+        logger.info("updateMedicalRecord(" + medicalRecordRepository + ", " + medicalRecord + ")");
 
 		MedicalRecord updatedMedicalRecord = null;
 		
@@ -86,6 +96,7 @@ public class MedicalRecordService {
 	}
 
 	public MedicalRecord removeMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
+        logger.info("removeMedicalRecord(" + medicalRecordRepository + ", " + medicalRecord + ")");
 
 		MedicalRecord deletedMedicalRecord = null;
 
@@ -100,6 +111,7 @@ public class MedicalRecordService {
 	}
 	
 	public String getPersonInfo(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, String name) {
+        logger.info("getPersonInfo(" + personRepository + ", " + medicalRecordRepository + ", " + name + ")");
 
 	    String[] namePart = name.split(" ");
 	    

@@ -2,6 +2,8 @@ package com.safetynet.alerts.service;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.jsoniter.output.JsonStream;
@@ -15,15 +17,20 @@ import com.safetynet.alerts.repository.PersonRepository;
 @Service
 public class FireStationService {
 
+    private static final Logger logger = LogManager.getLogger("FireStationService");
+
 	public ArrayList<FireStation> getFireStationList(FireStationRepository fireStationRepository) {
+        logger.info("getFireStationList(" + fireStationRepository + ")");
 		return fireStationRepository.getFireStationList();
 	}
 
 	public FireStation addFireStation(FireStationRepository fireStationRepository, FireStation fireStation) {
+        logger.info("addFireStation(" + fireStationRepository + ", " + fireStation + ")");
 		return fireStationRepository.addFireStation(fireStation);
 	}
 
 	public FireStation updateFireStation(FireStationRepository fireStationRepository, FireStation fireStation) {
+        logger.info("updateFireStation(" + fireStationRepository + ", " + fireStation + ")");
 
 		FireStation updatedFireStation = null;
 		
@@ -38,6 +45,7 @@ public class FireStationService {
 	}
 
 	public FireStation removeFireStation(FireStationRepository fireStationRepository, FireStation fireStation) {
+        logger.info("removeFireStation(" + fireStationRepository + ", " + fireStation + ")");
 
 		FireStation deletedFireStation = null;
 
@@ -52,6 +60,7 @@ public class FireStationService {
 	}
 
 	public String getFirestationCoverage(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String firestation) {
+        logger.info("getFirestationCoverage(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + firestation + ")");
 
 		ArrayList<String> firestationAdressList = new ArrayList<String>();
 

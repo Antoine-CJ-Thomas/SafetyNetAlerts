@@ -2,6 +2,8 @@ package com.safetynet.alerts.service;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.jsoniter.output.JsonStream;
@@ -18,15 +20,20 @@ import com.safetynet.alerts.repository.PersonRepository;
 @Service
 public class PersonService {
 
+    private static final Logger logger = LogManager.getLogger("PersonService");
+
 	public ArrayList<Person> getPersonList(PersonRepository personRepository) {
+        logger.info("getPersonList(" + personRepository + ")");
 		return personRepository.getPersonList();
 	}
 
 	public Person addPerson(PersonRepository personRepository, Person person) {
+        logger.info("addPerson(" + personRepository + ", " + person + ")");
 		return personRepository.addPerson(person);
 	}
 
 	public Person updatePerson(PersonRepository personRepository, Person person) {
+        logger.info("updatePerson(" + personRepository + ", " + person + ")");
 
 		Person updatedPerson = null;
 		
@@ -42,6 +49,7 @@ public class PersonService {
 	}
 
 	public Person removePerson(PersonRepository personRepository, Person person) {
+        logger.info("removePerson(" + personRepository + ", " + person + ")");
 
 		Person deletedPerson = null;
 
@@ -56,6 +64,7 @@ public class PersonService {
 	}
 	
 	public ArrayList<String> getPhoneList(PersonRepository personRepository, FireStationRepository fireStationRepository, String firestation) {
+        logger.info("getPhoneList(" + personRepository + ", " + fireStationRepository + ", " + firestation + ")");
 
 		ArrayList<String> firestationAdressList = new ArrayList<String>();
 
@@ -80,6 +89,7 @@ public class PersonService {
 	}
 	
 	public ArrayList<String> getCommunityEmailList(PersonRepository personRepository, String city) {
+        logger.info("getCommunityEmailList(" + personRepository + ", " + city + ")");
 		
 		ArrayList<String> emailList = new ArrayList<String>();
 
@@ -94,6 +104,7 @@ public class PersonService {
 	}
 	
 	public String getFireInfo(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String adress) {
+        logger.info("getFireInfo(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + adress + ")");
 		
 		String stationNumber = null;
 
@@ -119,6 +130,7 @@ public class PersonService {
 	}
 	
 	public String getFloodInfo(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String firestation) {
+        logger.info("getFloodInfo(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + firestation + ")");
 		
 		ArrayList<String> fireStationAddressList = new ArrayList<String>();
 		
@@ -150,6 +162,7 @@ public class PersonService {
 	}
 
 	public String getChildAlertInfo(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, String adress) {
+        logger.info("getChildAlertInfo(" + personRepository + ", " + medicalRecordRepository + ", " + adress + ")");
 
 		ChildAlertDTO childAlertResponse = new ChildAlertDTO(adress);
 		MedicalRecordService medicalRecordService = new MedicalRecordService();

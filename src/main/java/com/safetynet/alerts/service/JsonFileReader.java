@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.jsoniter.JsonIterator;
 import com.jsoniter.any.Any;
 import com.safetynet.alerts.model.FireStation;
@@ -16,12 +19,15 @@ import com.safetynet.alerts.repository.PersonRepository;
 
 public class JsonFileReader {
 
+    private static final Logger logger = LogManager.getLogger("JsonFileReader");
+
 	private String filePath;
 	private PersonRepository personRepository;
 	private FireStationRepository fireStationRepository;
 	private MedicalRecordRepository medicalRecordRepository;
 
 	public JsonFileReader(String filePath, PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
+        logger.info("JsonFileReader(" + filePath + ", " + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + ")");
 	
 		this.filePath = filePath;
 		this.personRepository = personRepository;
@@ -30,6 +36,7 @@ public class JsonFileReader {
 	}
 
 	public void readFile() {
+        logger.info("readFile()");
 
 		Any any = null;
 
@@ -40,6 +47,7 @@ public class JsonFileReader {
 			any = iter.readAny();
 
 		} catch (IOException e) {
+	        logger.error("readFile(" + e + ")");
 			e.printStackTrace();
 		}
 
@@ -59,6 +67,7 @@ public class JsonFileReader {
 	}
 
 	private ArrayList<String> extractMedications(Any any) {
+        logger.info("extractMedications(" + any + ")");
 
 		ArrayList<String> medications = new ArrayList<String>();
 		Any medicationsAny = any.get("medications");
@@ -68,6 +77,7 @@ public class JsonFileReader {
 	}
 
 	private ArrayList<String> extractAllergies(Any any) {
+        logger.info("extractAllergies(" + any + ")");
 
 		ArrayList<String> allergies = new ArrayList<String>();
 		Any allergiesAny = any.get("allergies");

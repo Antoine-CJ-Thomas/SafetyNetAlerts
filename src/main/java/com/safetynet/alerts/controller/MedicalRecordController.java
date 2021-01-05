@@ -2,6 +2,8 @@ package com.safetynet.alerts.controller;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,8 @@ import com.safetynet.alerts.service.MedicalRecordService;
 @RestController
 public class MedicalRecordController {
 
+    private static final Logger logger = LogManager.getLogger("MedicalRecordController");
+
 	@Autowired
 	private MedicalRecordService medicalRecordService;
 
@@ -35,26 +39,31 @@ public class MedicalRecordController {
 
 	@GetMapping("/medicalRecord")
 	public ArrayList<MedicalRecord> getMedicalRecordList() {
+        logger.info("getMedicalRecordList()");
 		return medicalRecordService.getMedicalRecordList(medicalRecordRepository);
 	}
 
 	@PostMapping("/medicalRecord")
 	public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        logger.info("addMedicalRecord()");
 		return medicalRecordService.addMedicalRecord(medicalRecordRepository, medicalRecord);
 	}
 
 	@PutMapping("/medicalRecord")
 	public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        logger.info("updateMedicalRecord()");
 		return medicalRecordService.updateMedicalRecord(medicalRecordRepository, medicalRecord);
 	}
 
 	@DeleteMapping("/medicalRecord")
 	public MedicalRecord removeMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        logger.info("removeMedicalRecord()");
 		return medicalRecordService.removeMedicalRecord(medicalRecordRepository, medicalRecord);
 	}
 
 	@GetMapping("/personInfo/{name}")
 	public String personInfo(@PathVariable("name") final String name) {
+        logger.info("personInfo(" + name + ")");
 		return medicalRecordService.getPersonInfo(personRepository, medicalRecordRepository, name);
 	}
 }
