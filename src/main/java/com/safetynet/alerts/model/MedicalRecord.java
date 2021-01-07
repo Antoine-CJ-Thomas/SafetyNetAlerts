@@ -23,39 +23,19 @@ public class MedicalRecord {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
 	public String getLastName() {
 		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
-	}
-
 	public ArrayList<String> getMedications() {
 		return medications;
 	}
 
-	public void setMedications(ArrayList<String> medications) {
-		this.medications = medications;
-	}
-
 	public ArrayList<String> getAllergies() {
 		return allergies;
-	}
-
-	public void setAllergies(ArrayList<String> allergies) {
-		this.allergies = allergies;
 	}
 }

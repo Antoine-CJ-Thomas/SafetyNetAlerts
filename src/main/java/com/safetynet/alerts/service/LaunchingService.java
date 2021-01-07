@@ -24,13 +24,12 @@ public class LaunchingService {
 		PersonRepository personRepository = new PersonRepository();
 		FireStationRepository fireStationRepository = new FireStationRepository();
 		MedicalRecordRepository medicalRecordRepository = new MedicalRecordRepository();
-
-		JsonFileReader jsonFileReader = new JsonFileReader(filePath, personRepository, fireStationRepository, medicalRecordRepository);
+		JsonFileReader jsonFileReader = new JsonFileReader();
 
 		PersonController personController = new PersonController(personRepository, fireStationRepository, medicalRecordRepository);
 		FireStationController fireStationController = new FireStationController(personRepository, fireStationRepository, medicalRecordRepository);
 		MedicalRecordController medicalRecordController = new MedicalRecordController(personRepository, fireStationRepository, medicalRecordRepository);
 
-		jsonFileReader.readFile();
+		jsonFileReader.readFile(filePath, personRepository, fireStationRepository, medicalRecordRepository);
 	}
 }

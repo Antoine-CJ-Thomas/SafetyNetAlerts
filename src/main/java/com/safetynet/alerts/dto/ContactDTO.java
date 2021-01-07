@@ -1,6 +1,6 @@
 package com.safetynet.alerts.dto;
 
-class ContactDTO {
+public class ContactDTO {
 
 	private String firstName;
 	private String lastName;
@@ -11,6 +11,21 @@ class ContactDTO {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
-		this.phone = lastName;
+		this.phone = phone;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getPhone() {
+		return phone;
 	}
 }
