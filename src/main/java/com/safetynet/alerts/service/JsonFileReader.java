@@ -21,22 +21,8 @@ public class JsonFileReader {
 
     private static final Logger logger = LogManager.getLogger("JsonFileReader");
 
-	private String filePath;
-	private PersonRepository personRepository;
-	private FireStationRepository fireStationRepository;
-	private MedicalRecordRepository medicalRecordRepository;
-
-	public JsonFileReader(String filePath, PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
-        logger.info("JsonFileReader(" + filePath + ", " + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + ")");
-	
-		this.filePath = filePath;
-		this.personRepository = personRepository;
-		this.fireStationRepository = fireStationRepository;
-		this.medicalRecordRepository = medicalRecordRepository;
-	}
-
-	public void readFile() {
-        logger.info("readFile()");
+	public void readFile(String filePath, PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
+        logger.info("readFile(" + filePath + ", " + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + ")");
 
 		Any any = null;
 

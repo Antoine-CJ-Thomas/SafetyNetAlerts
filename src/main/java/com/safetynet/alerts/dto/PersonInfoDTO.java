@@ -6,7 +6,6 @@ public class PersonInfoDTO {
 
 	private String firstName;
 	private String lastName;
-	
 	private ArrayList<HealthDTO> healths = new ArrayList<HealthDTO>();
 
 	public PersonInfoDTO(String firstName, String lastName) {
@@ -14,7 +13,15 @@ public class PersonInfoDTO {
 		this.lastName = lastName;
 	}
 
-	public void addPersonInfo(String lastName, String address, String age, ArrayList<String> medications, ArrayList<String> allergies) {
-		healths.add(new HealthDTO(lastName, address, age, medications, allergies));
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public ArrayList<HealthDTO> getHealths() {
+		return healths;
 	}
 }

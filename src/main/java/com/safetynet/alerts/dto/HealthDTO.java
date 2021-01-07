@@ -17,4 +17,24 @@ public class HealthDTO {
 		this.medications = medications;
 		this.allergies = allergies;
 	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public ArrayList<String> getMedications() {
+		return medications;
+	}
+
+	public ArrayList<String> getAllergies() {
+		return allergies;
+	}
 }

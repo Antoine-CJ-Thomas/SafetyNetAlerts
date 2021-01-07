@@ -10,19 +10,12 @@ public class FloodAlertDTO {
 	public FloodAlertDTO(String station) {
 		this.station = station;
 	}
-	
-	public void addHome(String address) {
-		homes.add(new HomeDTO(address));
+
+	public String getStation() {
+		return station;
 	}
-	
-	public void addInhabitantToHome(String address, String lastName, String phone, String age, ArrayList<String> medications, ArrayList<String> allergies) {
-		
-		for (HomeDTO h : homes) {
-			
-			if (h.getAddress().equals(address)) {
-				
-				h.addInhabitant(lastName, phone, age, medications, allergies);
-			}
-		}
+
+	public ArrayList<HomeDTO> getHomes() {
+		return homes;
 	}
 }

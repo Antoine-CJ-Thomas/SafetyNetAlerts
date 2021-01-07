@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.jsoniter.output.JsonStream;
+import com.safetynet.alerts.dto.ContactDTO;
 import com.safetynet.alerts.dto.FirestationCoverageDTO;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.Person;
@@ -73,7 +74,7 @@ public class FireStationService {
 		}
 		
 		ArrayList<Person> personList = new ArrayList<Person>();
-		FirestationCoverageDTO firestationCoverageResponse = new FirestationCoverageDTO(firestation);
+		FirestationCoverageDTO firestationCoverageDTO = new FirestationCoverageDTO(firestation);
 
 		for (Person p : personRepository.getPersonList()) {
 
@@ -87,20 +88,20 @@ public class FireStationService {
 		
 		for (Person p : personList) {
 
-			firestationCoverageResponse.addContact(p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone());
+			firestationCoverageDTO.getContacts().add(new ContactDTO(p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone()));
 			
 			if (Integer.parseInt(medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName())) <= 18) {
 				
-				firestationCoverageResponse.increaseChildCounter();
+				firestationCoverageDTO.increaseChildCounter();
 			}
 			
 			else {
 
-				firestationCoverageResponse.increaseAdultCounter();
+				firestationCoverageDTO.increaseAdultCounter();
 						
 			}
 		}
 		
-		return JsonStream.serialize(firestationCoverageResponse);
+		return JsonStream.serialize(firestationCoverageDTO);
 	}
 }

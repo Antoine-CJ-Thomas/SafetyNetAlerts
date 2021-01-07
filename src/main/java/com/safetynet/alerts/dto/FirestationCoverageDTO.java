@@ -9,22 +9,33 @@ public class FirestationCoverageDTO {
 	
 	private int childCounter;
 	private int adultCounter;
-	
 	private ArrayList<ContactDTO> contacts = new ArrayList<ContactDTO>();
 	
 	public FirestationCoverageDTO(String station) {
 		this.station = station;
 	}
 
-	public void addContact(String firstName, String lastName, String address, String phone) {
-		contacts.add(new ContactDTO(firstName, lastName, address, phone));
+	public String getStation() {
+		return station;
+	}
+
+	public int getChildCounter() {
+		return childCounter;
 	}
 
 	public void increaseChildCounter() {
 		childCounter++;
 	}
 
+	public int getAdultCounter() {
+		return adultCounter;
+	}
+
 	public void increaseAdultCounter() {
 		adultCounter++;
+	}
+
+	public ArrayList<ContactDTO> getContacts() {
+		return contacts;
 	}
 }

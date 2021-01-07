@@ -7,10 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.jsoniter.output.JsonStream;
+import com.safetynet.alerts.dto.AdultDTO;
 import com.safetynet.alerts.dto.ChildAlertDTO;
+import com.safetynet.alerts.dto.ChildDTO;
 import com.safetynet.alerts.dto.FireAlertDTO;
 import com.safetynet.alerts.dto.FloodAlertDTO;
-import com.safetynet.alerts.dto.PersonInfoDTO;
+import com.safetynet.alerts.dto.HomeDTO;
+import com.safetynet.alerts.dto.InhabitantDTO;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
@@ -35,16 +38,16 @@ public class PersonService {
 	public Person updatePerson(PersonRepository personRepository, Person person) {
         logger.info("updatePerson(" + personRepository + ", " + person + ")");
 
-		Person updatedPerson = null;
+        int personIndex = -1;
 		
 		for (Person p : personRepository.getPersonList()) {
 
 			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-				updatedPerson = p;
+				personIndex = personRepository.getPersonList().indexOf(p);
 				break;
 			}
-		}		
-		return personRepository.updatePerson(personRepository.getPersonList().indexOf(updatedPerson), person);
+		}
+		return personRepository.updatePerson(personIndex, person);
 		
 	}
 
@@ -123,7 +126,7 @@ public class PersonService {
 
 			if (p.getAddress().equals(adress)) {
 								
-				fireInfoResponse.addInhabitant(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName()));
+				fireInfoResponse.getInhabitants().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
 			}
 		}
 		return JsonStream.serialize(fireInfoResponse);
@@ -147,13 +150,15 @@ public class PersonService {
 		
 		for (String s : fireStationAddressList) {
 			
-			floodInfoResponse.addHome(s);
+			HomeDTO home = new HomeDTO(s);
+			
+			floodInfoResponse.getHomes().add(home);
 			
 			for (Person p : personRepository.getPersonList()) {
 
 				if (p.getAddress().equals(s)) {
 									
-					floodInfoResponse.addInhabitantToHome(s, p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName()));
+					home.getInhabitants().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
 				}
 			}
 		}
@@ -173,12 +178,12 @@ public class PersonService {
 				
 				if (Integer.parseInt(medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName())) <= 18) {
 					
-					childAlertResponse.addChild(p.getFirstName(), p.getLastName(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()));
+					childAlertResponse.getChilds().add(new ChildDTO(p.getFirstName(), p.getLastName(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName())));
 				}
 				
 				else {
 
-					childAlertResponse.addAdult(p.getFirstName(), p.getLastName());
+					childAlertResponse.getAdults().add(new AdultDTO(p.getFirstName(), p.getLastName()));
 					
 				}			
 			}
