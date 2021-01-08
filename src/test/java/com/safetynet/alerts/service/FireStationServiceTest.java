@@ -1,4 +1,4 @@
-package com.safetynet.alerts;
+package com.safetynet.alerts.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,6 @@ class FireStationServiceTest {
 
 	private FireStationService fireStationService;
 
-	private ArrayList<FireStation> fireStations;
 	@Mock
 	private FireStation fireStationFromList;	
 	@Mock
@@ -38,7 +38,7 @@ class FireStationServiceTest {
 	void test_getFireStationList() {
 
     	//GIVEN
-		fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
@@ -60,22 +60,10 @@ class FireStationServiceTest {
 	}
     
 	@Test
-	void test_updateFireStation_withEmptyRepository() {
-
-    	//GIVEN
-        
-    	//WHEN
-		when(fireStationRepository.updateFireStation(any(Integer.class), any(FireStation.class))).thenReturn(fireStation);
-		
-    	//THEN
-        assertEquals(fireStation, fireStationService.updateFireStation(fireStationRepository, fireStation));
-	}
-    
-	@Test
 	void test_updateFireStation_withRepositoryThatContainNoCommonData() {
 
     	//GIVEN
-		fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStation.getAddress()).thenReturn("address");
@@ -92,7 +80,7 @@ class FireStationServiceTest {
 	void test_updateFireStation_withRepositoryThatContainCommonData() {
 
     	//GIVEN
-		fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStation.getAddress()).thenReturn("address");
@@ -106,22 +94,10 @@ class FireStationServiceTest {
 	}
     
 	@Test
-	void test_removeFireStation_withEmptyRepository() {
-
-    	//GIVEN
-        
-    	//WHEN
-		when(fireStationRepository.removeFireStation(null)).thenReturn(fireStation);
-		
-    	//THEN
-        assertEquals(fireStation, fireStationService.removeFireStation(fireStationRepository, fireStation));
-	}
-    
-	@Test
 	void test_removeFireStation_withRepositoryThatContainNoCommonData() {
 
     	//GIVEN
-		fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStation.getAddress()).thenReturn("address");
@@ -138,7 +114,7 @@ class FireStationServiceTest {
 	void test_removeFireStation_withRepositoryThatContainCommonData() {
 
     	//GIVEN
-		fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStation.getAddress()).thenReturn("address");
@@ -149,5 +125,11 @@ class FireStationServiceTest {
 		
     	//THEN
         assertEquals(fireStation, fireStationService.removeFireStation(fireStationRepository, fireStation));
+	}
+    
+	@Test
+	@Disabled
+	void test_getFirestationCoverage() {
+		
 	}
 }

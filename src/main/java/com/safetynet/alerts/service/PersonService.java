@@ -119,17 +119,17 @@ public class PersonService {
 			}
 		}
 		
-		FireAlertDTO fireInfoResponse = new FireAlertDTO(adress, stationNumber);
+		FireAlertDTO fireAlertDTO = new FireAlertDTO(adress, stationNumber);
 		MedicalRecordService medicalRecordService = new MedicalRecordService();
 
 		for (Person p : personRepository.getPersonList()) {
 
 			if (p.getAddress().equals(adress)) {
 								
-				fireInfoResponse.getInhabitants().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
+				fireAlertDTO.getInhabitants().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
 			}
 		}
-		return JsonStream.serialize(fireInfoResponse);
+		return JsonStream.serialize(fireAlertDTO);
 	}
 	
 	public String getFloodInfo(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String firestation) {

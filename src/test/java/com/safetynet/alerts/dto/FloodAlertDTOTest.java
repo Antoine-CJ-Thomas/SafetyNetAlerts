@@ -1,4 +1,4 @@
-package com.safetynet.alerts;
+package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,34 +7,34 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.safetynet.alerts.dto.FloodAlertDTO;
 import com.safetynet.alerts.dto.HomeDTO;
-import com.safetynet.alerts.dto.InhabitantDTO;
 
 @SpringBootTest
-class HomeDTOTest {
+class FloodAlertDTOTest {
 
-	private HomeDTO homeDTO;
+	private FloodAlertDTO floodAlertDTO;
 
 	@Mock
-	private InhabitantDTO inhabitantDTO;
+	private HomeDTO homeDTO;
 
     @BeforeEach
     private void setUpPerTest() {
     	
-    	homeDTO = new HomeDTO(null);
+    	floodAlertDTO = new FloodAlertDTO(null);
     }
-    
+
 	@Test
-	void test_setAndGetAddress_equalConstantString() {
+	void test_setAndGetStation_equalConstantString() {
 
     	//GIVEN
-		String address = "address";
+		String station = "station";
         
     	//WHEN
-		homeDTO = new HomeDTO(address);
+		floodAlertDTO = new FloodAlertDTO(station);
     	
     	//THEN
-        assertEquals(address, homeDTO.getAddress());
+        assertEquals(station, floodAlertDTO.getStation());
 	}
 
 	@Test
@@ -43,9 +43,9 @@ class HomeDTOTest {
     	//GIVEN
         
     	//WHEN
-		homeDTO.getInhabitants().add(inhabitantDTO);
+		floodAlertDTO.getHomes().add(homeDTO);
     	
     	//THEN
-        assertEquals(true, homeDTO.getInhabitants().contains(inhabitantDTO));
+        assertEquals(true, floodAlertDTO.getHomes().contains(homeDTO));
 	}
 }

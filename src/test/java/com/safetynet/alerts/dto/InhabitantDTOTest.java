@@ -1,4 +1,4 @@
-package com.safetynet.alerts;
+package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.safetynet.alerts.dto.HealthDTO;
+import com.safetynet.alerts.dto.InhabitantDTO;
 
 @SpringBootTest
-class HealthDTOTest {
+class InhabitantDTOTest {
 
-	private HealthDTO healthDTO;
+	private InhabitantDTO inhabitantDTO;
 
 	@Test
 	void test_setAndGetLastName_equalConstantString() {
@@ -21,23 +21,23 @@ class HealthDTOTest {
 		String lastName = "lastName";
         
     	//WHEN
-    	healthDTO = new HealthDTO(lastName, null, null, null, null);
+    	inhabitantDTO = new InhabitantDTO(lastName, null, null, null, null);
     	
     	//THEN
-        assertEquals(lastName, healthDTO.getLastName());
+        assertEquals(lastName, inhabitantDTO.getLastName());
 	}
 
 	@Test
-	void test_setAndGetAddress_equalConstantString() {
+	void test_setAndGetPhone_equalConstantString() {
 
     	//GIVEN
-		String address = "address";
+		String phone = "phone";
         
     	//WHEN
-    	healthDTO = new HealthDTO(null, address, null, null, null);
+    	inhabitantDTO = new InhabitantDTO(null, phone, null, null, null);
     	
     	//THEN
-        assertEquals(address, healthDTO.getAddress());
+        assertEquals(phone, inhabitantDTO.getPhone());
 	}
 
 	@Test
@@ -47,10 +47,10 @@ class HealthDTOTest {
 		String age = "age";
         
     	//WHEN
-    	healthDTO = new HealthDTO(null, null, age, null, null);
+    	inhabitantDTO = new InhabitantDTO(null, null, age, null, null);
     	
     	//THEN
-        assertEquals(age, healthDTO.getAge());
+        assertEquals(age, inhabitantDTO.getAge());
 	}
 
 	@Test
@@ -63,10 +63,10 @@ class HealthDTOTest {
 		medications.add("medication 1");
 		medications.add("medication 2");
 		medications.add("medication 3");
-    	healthDTO = new HealthDTO(null, null, null, medications, null);
+    	inhabitantDTO = new InhabitantDTO(null, null, null, medications, null);
     	
     	//THEN
-        assertEquals(medications, healthDTO.getMedications());
+        assertEquals(medications, inhabitantDTO.getMedications());
 	}
 
 	@Test
@@ -79,9 +79,9 @@ class HealthDTOTest {
 		allergies.add("allergie 1");
 		allergies.add("allergie 2");
 		allergies.add("allergie 3");
-    	healthDTO = new HealthDTO(null, null, null, null, allergies);
+    	inhabitantDTO = new InhabitantDTO(null, null, null, null, allergies);
     	
     	//THEN
-        assertEquals(allergies, healthDTO.getAllergies());
+        assertEquals(allergies, inhabitantDTO.getAllergies());
 	}
 }

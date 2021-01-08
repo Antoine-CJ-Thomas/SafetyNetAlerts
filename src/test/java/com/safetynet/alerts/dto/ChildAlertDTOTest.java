@@ -1,4 +1,4 @@
-package com.safetynet.alerts;
+package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
