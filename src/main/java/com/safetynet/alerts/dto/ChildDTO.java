@@ -1,5 +1,8 @@
 package com.safetynet.alerts.dto;
 
+/**
+ * This class stores the data of a child
+ */
 public class ChildDTO {
 
 	private String firstName;

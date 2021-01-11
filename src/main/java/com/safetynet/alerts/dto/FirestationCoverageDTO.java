@@ -2,7 +2,9 @@ package com.safetynet.alerts.dto;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class stores the data of the response of a fire station coverage request
+ */
 public class FirestationCoverageDTO {
 
 	private String station;

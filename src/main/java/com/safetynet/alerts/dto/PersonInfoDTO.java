@@ -2,6 +2,9 @@ package com.safetynet.alerts.dto;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the data of the response of a person info request
+ */
 public class PersonInfoDTO {
 
 	private String firstName;

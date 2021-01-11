@@ -1,5 +1,8 @@
 package com.safetynet.alerts.dto;
 
+/**
+ * This class stores the data of an adult
+ */
 public class AdultDTO {
 
 	private String firstName;

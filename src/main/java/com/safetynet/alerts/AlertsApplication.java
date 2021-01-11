@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.safetynet.alerts.service.LaunchingService;
 
+/**
+ * This class allow to start the application
+ */
 @SpringBootApplication
 public class AlertsApplication {
 

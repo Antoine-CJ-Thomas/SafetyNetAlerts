@@ -11,6 +11,9 @@ import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
 
+/**
+ * This class allow to launch the application
+ */
 @Service
 public class LaunchingService {
 

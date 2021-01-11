@@ -1,5 +1,8 @@
 package com.safetynet.alerts.model;
 
+/**
+ * This class stores the data of a fire station
+ */
 public class FireStation {
 
 	private String address;

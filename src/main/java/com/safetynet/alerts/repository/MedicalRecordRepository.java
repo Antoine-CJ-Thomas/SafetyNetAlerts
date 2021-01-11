@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.model.MedicalRecord;
 
+/**
+ * This class allows to interact with a medical record repository
+ */
 @Component
 public class MedicalRecordRepository {
 

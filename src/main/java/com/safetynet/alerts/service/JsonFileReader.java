@@ -17,6 +17,9 @@ import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
 
+/**
+ * This class allows to extract data from a JSON file, and store them in different repositories
+ */
 public class JsonFileReader {
 
     private static final Logger logger = LogManager.getLogger("JsonFileReader");

@@ -1,5 +1,8 @@
 package com.safetynet.alerts.model;
 
+/**
+ * This class stores the data of a person
+ */
 public class Person {
 
 	private String firstName;

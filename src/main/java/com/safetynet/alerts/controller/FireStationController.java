@@ -19,6 +19,9 @@ import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
 import com.safetynet.alerts.service.FireStationService;
 
+/**
+ * This class allows to interact with the application via fire station http requests
+ */
 @RestController
 public class FireStationController {
 

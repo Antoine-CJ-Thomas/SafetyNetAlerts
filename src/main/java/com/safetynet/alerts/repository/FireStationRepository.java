@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.model.FireStation;
 
+/**
+ * This class allows to interact with a fire station repository
+ */
 @Component
 public class FireStationRepository {
 

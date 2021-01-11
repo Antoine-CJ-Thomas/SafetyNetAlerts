@@ -2,6 +2,9 @@ package com.safetynet.alerts.dto;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the data of a person health
+ */
 public class HealthDTO {
 
 	private String lastName;

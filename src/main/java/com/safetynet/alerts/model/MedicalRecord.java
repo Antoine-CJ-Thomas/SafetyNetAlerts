@@ -2,6 +2,9 @@ package com.safetynet.alerts.model;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the data of a medical record
+ */
 public class MedicalRecord {
 
 	private String firstName;

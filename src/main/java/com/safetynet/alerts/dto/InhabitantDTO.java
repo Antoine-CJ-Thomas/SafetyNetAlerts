@@ -2,6 +2,9 @@ package com.safetynet.alerts.dto;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the data of an inhabitant
+ */
 public class InhabitantDTO {
 
 	private String lastName;

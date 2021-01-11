@@ -19,6 +19,9 @@ import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
 import com.safetynet.alerts.service.PersonService;
 
+/**
+ * This class allows to interact with the application via person http requests
+ */
 @RestController
 public class PersonController {
 

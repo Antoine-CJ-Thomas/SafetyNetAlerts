@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.model.Person;
 
+/**
+ * This class allows to interact with a person repository
+ */
 @Component
 public class PersonRepository {
 

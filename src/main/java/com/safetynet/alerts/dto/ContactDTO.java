@@ -1,5 +1,8 @@
 package com.safetynet.alerts.dto;
 
+/**
+ * This class stores the data of a person contacts
+ */
 public class ContactDTO {
 
 	private String firstName;

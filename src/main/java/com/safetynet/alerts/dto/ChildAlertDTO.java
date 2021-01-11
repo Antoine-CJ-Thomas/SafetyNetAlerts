@@ -2,6 +2,9 @@ package com.safetynet.alerts.dto;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the data of the response of a child alert request
+ */
 public class ChildAlertDTO {
 
 	private String address;
