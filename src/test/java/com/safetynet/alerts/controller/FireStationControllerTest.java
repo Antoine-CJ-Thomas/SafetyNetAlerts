@@ -1,105 +1,114 @@
 package com.safetynet.alerts.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
+import com.safetynet.alerts.controller.FireStationController;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
 import com.safetynet.alerts.service.FireStationService;
 
+
 @SpringBootTest
 class FireStationControllerTest {
-
-	private FireStationController fireStationController;
 	
-	@Mock
-	private FireStationService fireStationService;
+	private MockMvc mockMvc;
+	private MvcResult mvcResult;
+	   
+	@Autowired
+   	private WebApplicationContext webApplicationContext;
+	
+	private FireStationController fireStationController;
+
 	@Mock
 	private FireStation fireStation;
 	@Mock
-	private ArrayList<FireStation> fireStations;
+	private FireStationService fireStationService;
 	@Mock
 	private PersonRepository personRepository;
 	@Mock
 	private FireStationRepository fireStationRepository;
 	@Mock
 	private MedicalRecordRepository medicalRecordRepository;
-	
+        	
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
+
+    	mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     	
     	fireStationController = new FireStationController(personRepository, fireStationRepository, medicalRecordRepository);
         ReflectionTestUtils.setField(fireStationController, "fireStationService", fireStationService);
     }
     
 	@Test
-	void test_getFireStationList() {
+	void test_getFireStationList() throws Exception {
 
     	//GIVEN
-        
-    	//WHEN
-		when(fireStationService.getFireStationList(fireStationRepository)).thenReturn(fireStations);
 		
+    	//WHEN
+		mvcResult = mockMvc.perform(get("/firestation")).andReturn();
+
     	//THEN
-        assertEquals(fireStations, fireStationController.getFireStationList());
+		assertEquals(200, mvcResult.getResponse().getStatus());
 	}
-    
+	
 	@Test
-	void test_addFireStation() {
+	void test_addFireStation() throws Exception{
 
     	//GIVEN
         
     	//WHEN
-		when(fireStationService.addFireStation(fireStationRepository, fireStation)).thenReturn(fireStation);
+		mvcResult = mockMvc.perform(post("/firestation").param("address", "A").param("station", "S")).andReturn();
+	
+    	//THEN
+		assertEquals(200, mvcResult.getResponse().getStatus());
+	} 
+	
+	@Test
+	@Disabled
+	void test_updateFireStation() throws Exception {
+    	
+    	//GIVEN
+	
+    	//WHEN
     	
     	//THEN
-        assertEquals(fireStation, fireStationController.addFireStation(fireStation));
 	}
     
 	@Test
-	void test_updateFireStation() {
+	@Disabled
+	void test_removeFireStation() throws Exception {
 
     	//GIVEN
         
     	//WHEN
-		when(fireStationService.updateFireStation(fireStationRepository, fireStation)).thenReturn(fireStation);
     	
     	//THEN
-        assertEquals(fireStation, fireStationController.updateFireStation(fireStation));
 	}
     
 	@Test
-	void test_removeFireStation() {
-
-    	//GIVEN
-        
-    	//WHEN
-		when(fireStationService.removeFireStation(fireStationRepository, fireStation)).thenReturn(fireStation);
-    	
-    	//THEN
-        assertEquals(fireStation, fireStationController.removeFireStation(fireStation));
-	}
-    
-	@Test
-	void test_firestationCoverage() {
+	@Disabled
+	void test_firestationCoverage() throws Exception {
 		
     	//GIVEN
-		String firestation = new String("firestation");
-		String firestationCoverage = new String("firestationCoverage");
         
     	//WHEN
-		when(fireStationService.getFirestationCoverage(personRepository, fireStationRepository, medicalRecordRepository, firestation)).thenReturn(firestationCoverage);
     	
     	//THEN
-        assertEquals(firestationCoverage, fireStationController.firestationCoverage(firestation));
 	}
 }

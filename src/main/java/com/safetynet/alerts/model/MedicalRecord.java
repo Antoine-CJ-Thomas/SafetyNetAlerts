@@ -10,16 +10,16 @@ public class MedicalRecord {
 	private String firstName;
 	private String lastName;
 	private String birthdate;
-	private ArrayList<String> medications;
-	private ArrayList<String> allergies;
+	private ArrayList<String> medicationList;
+	private ArrayList<String> allergieList;
 
-	public MedicalRecord(String firstName, String lastName, String birthdate, ArrayList<String> medications, ArrayList<String> allergies) {
+	public MedicalRecord(String firstName, String lastName, String birthdate, ArrayList<String> medicationList, ArrayList<String> allergieList) {
 
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthdate = birthdate;
-		this.medications = medications;
-		this.allergies = allergies;
+		this.medicationList = medicationList;
+		this.allergieList = allergieList;
 	}
 
 	public String getFirstName() {
@@ -34,11 +34,11 @@ public class MedicalRecord {
 		return birthdate;
 	}
 
-	public ArrayList<String> getMedications() {
-		return medications;
+	public ArrayList<String> getMedicationList() {
+		return medicationList;
 	}
 
-	public ArrayList<String> getAllergies() {
-		return allergies;
+	public ArrayList<String> getAllergieList() {
+		return allergieList;
 	}
 }

@@ -7,24 +7,22 @@ import java.util.ArrayList;
  */
 public class PersonInfoDTO {
 
-	private String firstName;
-	private String lastName;
-	private ArrayList<HealthDTO> healths = new ArrayList<HealthDTO>();
+	private String name;
+	private ArrayList<HealthDTO> healthList = new ArrayList<HealthDTO>();
 
-	public PersonInfoDTO(String firstName, String lastName) {
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public PersonInfoDTO(String name) {
+		this.name = name;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public void setHealthList(ArrayList<HealthDTO> healthList) {
+		this.healthList = healthList;
 	}
 
-	public ArrayList<HealthDTO> getHealths() {
-		return healths;
+	public ArrayList<HealthDTO> getHealthList() {
+		return healthList;
 	}
 }

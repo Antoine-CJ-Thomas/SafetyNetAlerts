@@ -15,7 +15,7 @@ class MedicalRecordTest {
 	private MedicalRecord medicalRecord;
     
 	@Test
-	void test_setAndGetFirstName_equalConstantString() {
+	void test_setAndGetFirstName() {
 
     	//GIVEN
 		String firstName = "firstName";
@@ -28,7 +28,7 @@ class MedicalRecordTest {
 	}
 
 	@Test
-	void test_setAndGetLastName_equalConstantString() {
+	void test_setAndGetLastName() {
 
     	//GIVEN
 		String lastName = "lastName";
@@ -41,7 +41,7 @@ class MedicalRecordTest {
 	}
 
 	@Test
-	void test_setAndGetBirthdate_equalConstantString() {
+	void test_setAndGetBirthdate() {
 
     	//GIVEN
 		String birthdate = "birthdate";
@@ -54,34 +54,34 @@ class MedicalRecordTest {
 	}
 
 	@Test
-	void test_setAndGetMedications_equalConstantString() {
+	void test_setAndGetMedicationList() {
 
     	//GIVEN
-		ArrayList<String> medications = new ArrayList<String>();
+		ArrayList<String> medicationList = new ArrayList<String>();
         
     	//WHEN
-		medications.add("medication 1");
-		medications.add("medication 2");
-		medications.add("medication 3");
-    	medicalRecord = new MedicalRecord(null, null, null, medications, null);
+		medicationList.add("medication 1");
+		medicationList.add("medication 2");
+		medicationList.add("medication 3");
+    	medicalRecord = new MedicalRecord(null, null, null, medicationList, null);
     	
     	//THEN
-        assertEquals(medications, medicalRecord.getMedications());
+        assertEquals(medicationList, medicalRecord.getMedicationList());
 	}
 
 	@Test
-	void test_setAndGetAllergies_equalConstantString() {
+	void test_setAndGetAllergieList() {
 
     	//GIVEN
-		ArrayList<String> allergies = new ArrayList<String>();
+		ArrayList<String> allergieList = new ArrayList<String>();
         
     	//WHEN
-		allergies.add("allergie 1");
-		allergies.add("allergie 2");
-		allergies.add("allergie 3");
-    	medicalRecord = new MedicalRecord(null, null, null, null, allergies);
+		allergieList.add("allergie 1");
+		allergieList.add("allergie 2");
+		allergieList.add("allergie 3");
+    	medicalRecord = new MedicalRecord(null, null, null, null, allergieList);
     	
     	//THEN
-        assertEquals(allergies, medicalRecord.getAllergies());
+        assertEquals(allergieList, medicalRecord.getAllergieList());
 	}
 }

@@ -2,11 +2,12 @@ package com.safetynet.alerts.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 
@@ -16,51 +17,59 @@ class MedicalRecordRepositoryTest {
 	private MedicalRecordRepository medicalRecordRepository;
 
 	@Mock
-	private MedicalRecord medicalRecord;
-	@Mock
-	private MedicalRecord updatedMedicalRecord;
+	private MedicalRecord medicalRecord, updatedMedicalRecord;
 
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
     	
     	medicalRecordRepository = new MedicalRecordRepository();
     }
 
 	@Test
-	void test_addFireStation() {
+	void test_getMedicalRecordList() {
 
     	//GIVEN
+		ArrayList<MedicalRecord> medicalRecordList = new ArrayList<MedicalRecord>();
         
     	//WHEN
-		medicalRecordRepository.addMedicalRecord(medicalRecord);
+		medicalRecordRepository.setMedicalRecordList(medicalRecordList);
     	
     	//THEN
-        assertEquals(true, medicalRecordRepository.getMedicalRecordList().contains(medicalRecord));
+        assertEquals(medicalRecordList, medicalRecordRepository.getMedicalRecordList());
 	}
 
 	@Test
-	void test_updateFireStation() {
+	void test_addMedicalRecord() {
 
     	//GIVEN
         
     	//WHEN
-		medicalRecordRepository.addMedicalRecord(medicalRecord);
-		medicalRecordRepository.updateMedicalRecord(medicalRecordRepository.getMedicalRecordList().indexOf(medicalRecord), updatedMedicalRecord);
     	
     	//THEN
-        assertEquals(true, medicalRecordRepository.getMedicalRecordList().contains(updatedMedicalRecord));
+        assertEquals(medicalRecord, medicalRecordRepository.addMedicalRecord(medicalRecord));
 	}
 
 	@Test
-	void test_removeFireStation() {
+	void test_updateMedicalRecord() {
 
     	//GIVEN
         
     	//WHEN
 		medicalRecordRepository.addMedicalRecord(medicalRecord);
-		medicalRecordRepository.removeMedicalRecord(medicalRecord);
     	
     	//THEN
-        assertEquals(false, medicalRecordRepository.getMedicalRecordList().contains(medicalRecord));
+        assertEquals(updatedMedicalRecord, medicalRecordRepository.updateMedicalRecord(0, updatedMedicalRecord));
+	}
+
+	@Test
+	void test_removeMedicalRecord() {
+
+    	//GIVEN
+        
+    	//WHEN
+		medicalRecordRepository.addMedicalRecord(medicalRecord);
+    	
+    	//THEN
+        assertEquals(medicalRecord, medicalRecordRepository.removeMedicalRecord(0, medicalRecord));
 	}
 }

@@ -7,13 +7,17 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.safetynet.alerts.dto.ContactDTO;
+import com.safetynet.alerts.dto.FirestationCoverageInfoDTO;
 import com.safetynet.alerts.model.FireStation;
+import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
+import com.safetynet.alerts.repository.MedicalRecordRepository;
+import com.safetynet.alerts.repository.PersonRepository;
 import com.safetynet.alerts.service.FireStationService;
 
 @SpringBootTest
@@ -22,29 +26,39 @@ class FireStationServiceTest {
 	private FireStationService fireStationService;
 
 	@Mock
-	private FireStation fireStationFromList;	
+	private Person person, personChild;
 	@Mock
-	private FireStation fireStation;
+	private FireStation fireStation, fireStationFromList;
+	@Mock
+	private PersonRepository personRepository;
 	@Mock
 	private FireStationRepository fireStationRepository;
+	@Mock
+	private MedicalRecordRepository medicalRecordRepository;
+	@Mock
+	private FirestationCoverageInfoDTO firestationCoverageInfoDTO;
+	@Mock
+	private MedicalRecordService medicalRecordService;
+	@Mock
+	private ContactDTO contact;
 
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
     	
-    	fireStationService = new FireStationService();
+    	fireStationService = new FireStationService(personRepository, fireStationRepository, medicalRecordRepository);
     }
 
 	@Test
 	void test_getFireStationList() {
 
     	//GIVEN
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
         
     	//WHEN
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
     	
     	//THEN
-        assertEquals(fireStations, fireStationService.getFireStationList(fireStationRepository));
+        assertEquals(fireStationList, fireStationService.getFireStationList());
 	}
     
 	@Test
@@ -56,80 +70,76 @@ class FireStationServiceTest {
 		when(fireStationRepository.addFireStation(any(FireStation.class))).thenReturn(fireStation);
     	
     	//THEN
-        assertEquals(fireStation, fireStationService.addFireStation(fireStationRepository, fireStation));
+        assertEquals(fireStation, fireStationService.addFireStation(fireStation));
 	}
     
 	@Test
-	void test_updateFireStation_withRepositoryThatContainNoCommonData() {
+	void test_updateFireStation() {
 
     	//GIVEN
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
-        
-    	//WHEN
-		when(fireStation.getAddress()).thenReturn("address");
-		when(fireStationFromList.getAddress()).thenReturn("another address");
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStationRepository.updateFireStation(any(Integer.class), any(FireStation.class))).thenReturn(fireStation);
-		fireStations.add(fireStationFromList);
-		
-    	//THEN
-        assertEquals(fireStation, fireStationService.updateFireStation(fireStationRepository, fireStation));
-	}
-    
-	@Test
-	void test_updateFireStation_withRepositoryThatContainCommonData() {
-
-    	//GIVEN
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStation.getAddress()).thenReturn("address");
 		when(fireStationFromList.getAddress()).thenReturn("address");
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
 		when(fireStationRepository.updateFireStation(any(Integer.class), any(FireStation.class))).thenReturn(fireStation);
-		fireStations.add(fireStationFromList);
+		fireStationList.add(fireStationFromList);
 		
     	//THEN
-        assertEquals(fireStation, fireStationService.updateFireStation(fireStationRepository, fireStation));
+        assertEquals(fireStation, fireStationService.updateFireStation(fireStation));
 	}
     
 	@Test
-	void test_removeFireStation_withRepositoryThatContainNoCommonData() {
+	void test_removeFireStation() {
 
     	//GIVEN
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
-        
-    	//WHEN
-		when(fireStation.getAddress()).thenReturn("address");
-		when(fireStationFromList.getAddress()).thenReturn("another address");
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStationRepository.removeFireStation(null)).thenReturn(fireStation);
-		fireStations.add(fireStationFromList);
-		
-    	//THEN
-        assertEquals(fireStation, fireStationService.removeFireStation(fireStationRepository, fireStation));
-	}
-    
-	@Test
-	void test_removeFireStation_withRepositoryThatContainCommonData() {
-
-    	//GIVEN
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
         
     	//WHEN
 		when(fireStation.getAddress()).thenReturn("address");
 		when(fireStationFromList.getAddress()).thenReturn("address");
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStationRepository.removeFireStation(any(FireStation.class))).thenReturn(fireStation);
-		fireStations.add(fireStation);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
+		when(fireStationRepository.removeFireStation(any(Integer.class), any(FireStation.class))).thenReturn(fireStation);
+		fireStationList.add(fireStationFromList);
 		
     	//THEN
-        assertEquals(fireStation, fireStationService.removeFireStation(fireStationRepository, fireStation));
+        assertEquals(fireStation, fireStationService.removeFireStation(fireStation));
 	}
     
 	@Test
-	@Disabled
 	void test_getFirestationCoverage() {
-		
+
+    	//GIVEN
+		ArrayList<Person> personList = new ArrayList<Person>();
+		ArrayList<Person> personListFromDTO = new ArrayList<Person>();
+		ArrayList<String> addressList = new ArrayList<String>();
+		ArrayList<ContactDTO> contactList = new ArrayList<ContactDTO>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
+        
+    	//WHEN
+		when(fireStation.getStation()).thenReturn("station");
+		when(person.getFirstName()).thenReturn("firstname");
+		when(person.getLastName()).thenReturn("lastname");
+		when(person.getAddress()).thenReturn("address");
+		when(person.getPhone()).thenReturn("phone");
+		when(personChild.getFirstName()).thenReturn("childfirstname");
+		when(personChild.getLastName()).thenReturn("childlastname");
+		when(personRepository.getPersonList()).thenReturn(personList);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
+		when(firestationCoverageInfoDTO.getStation()).thenReturn("station");
+		when(firestationCoverageInfoDTO.getAddressList()).thenReturn(addressList);
+		when(firestationCoverageInfoDTO.getContactList()).thenReturn(contactList);
+		when(firestationCoverageInfoDTO.getPersonList()).thenReturn(personListFromDTO);
+		when(medicalRecordService.getAge(person.getFirstName(), person.getLastName())).thenReturn("20");
+		when(medicalRecordService.getAge(personChild.getFirstName(), personChild.getLastName())).thenReturn("10");
+		personList.add(person);
+		contactList.add(contact);
+		addressList.add("address");
+		fireStationList.add(fireStation);
+		personListFromDTO.add(personChild);
+			
+    	//THEN
+        assertEquals(firestationCoverageInfoDTO, fireStationService.getFirestationCoverage(medicalRecordService, firestationCoverageInfoDTO));
 	}
 }

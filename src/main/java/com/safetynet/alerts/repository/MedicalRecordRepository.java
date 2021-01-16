@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 
 /**
@@ -16,28 +17,33 @@ public class MedicalRecordRepository {
 
     private static final Logger logger = LogManager.getLogger("MedicalRecordRepository");
 
-	private ArrayList<MedicalRecord> medicalRecords = new ArrayList<MedicalRecord>();
+	private ArrayList<MedicalRecord> medicalRecordList = new ArrayList<MedicalRecord>();
+
+	public void setMedicalRecordList(ArrayList<MedicalRecord> medicalRecordList) {
+        logger.info("setMedicalRecordList(" + medicalRecordList + ")");
+		this.medicalRecordList = medicalRecordList;
+	}
 
 	public ArrayList<MedicalRecord> getMedicalRecordList() {
         logger.info("getMedicalRecordList()");
-		return medicalRecords;
+		return medicalRecordList;
 	}
 
 	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
         logger.info("addMedicalRecord(" + medicalRecord + ")");
-		medicalRecords.add(medicalRecord);
+        medicalRecordList.add(medicalRecord);
 		return medicalRecord;
 	}
 
 	public MedicalRecord updateMedicalRecord(int index, MedicalRecord medicalRecord) {
-        logger.info("updateMedicalRecord(" + medicalRecord + ")");
-		medicalRecords.set(index, medicalRecord);
+        logger.info("updateMedicalRecord(" + index + ", " + medicalRecord + ")");
+        medicalRecordList.set(index, medicalRecord);
 		return medicalRecord;
 	}
 
-	public MedicalRecord removeMedicalRecord(MedicalRecord medicalRecord) {
-        logger.info("removeMedicalRecord(" + medicalRecord + ")");
-		medicalRecords.remove(medicalRecord);
+	public MedicalRecord removeMedicalRecord(int index, MedicalRecord medicalRecord) {
+        logger.info("removeMedicalRecord(" + index + ", " + medicalRecord + ")");
+        medicalRecordList.remove(index);
 		return medicalRecord;
 	}
 }

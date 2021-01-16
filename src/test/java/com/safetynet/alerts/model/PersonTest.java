@@ -13,7 +13,7 @@ class PersonTest {
 	private Person person;
     
 	@Test
-	void test_setAndGetFirstName_equalConstantString() {
+	void test_setAndGetFirstName() {
 
     	//GIVEN
 		String firstName = "firstName";
@@ -26,7 +26,7 @@ class PersonTest {
 	}
 
 	@Test
-	void test_setAndGetLastName_equalConstantString() {
+	void test_setAndGetLastName() {
 
     	//GIVEN
 		String lastName = "lastName";
@@ -39,7 +39,7 @@ class PersonTest {
 	}
 
 	@Test
-	void test_setAndGetAddress_equalConstantString() {
+	void test_setAndGetAddress() {
 
     	//GIVEN
 		String address = "address";
@@ -52,7 +52,7 @@ class PersonTest {
 	}
 
 	@Test
-	void test_setAndGetCity_equalConstantString() {
+	void test_setAndGetCity() {
 
     	//GIVEN
 		String city = "city";
@@ -65,7 +65,7 @@ class PersonTest {
 	}
 
 	@Test
-	void test_setAndGetZip_equalConstantString() {
+	void test_setAndGetZip() {
 
     	//GIVEN
 		String zip = "zip";
@@ -78,7 +78,7 @@ class PersonTest {
 	}
 
 	@Test
-	void test_setAndGetPhone_equalConstantString() {
+	void test_setAndGetPhone() {
 
     	//GIVEN
 		String phone = "phone";
@@ -91,7 +91,7 @@ class PersonTest {
 	}
 
 	@Test
-	void test_setAndGetEmail_equalConstantString() {
+	void test_setAndGetEmail() {
 
     	//GIVEN
 		String email = "email";

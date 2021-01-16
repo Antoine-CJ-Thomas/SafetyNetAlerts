@@ -16,6 +16,7 @@ public class ContactDTO {
 		this.address = address;
 		this.phone = phone;
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}

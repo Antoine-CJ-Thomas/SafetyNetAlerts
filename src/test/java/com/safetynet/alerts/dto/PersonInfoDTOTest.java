@@ -2,6 +2,8 @@ package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,46 +21,32 @@ class PersonInfoDTOTest {
 	private HealthDTO healthDTO;
 
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
     	
-    	personInfoDTO = new PersonInfoDTO(null, null);
+    	personInfoDTO = new PersonInfoDTO("firstName lastname");
     }
     
 	@Test
-	void test_setAndGetFirstName_equalConstantString() {
+	void test_setAndGetName() {
 
     	//GIVEN
-		String firstName = "firstName";
         
     	//WHEN
-    	personInfoDTO = new PersonInfoDTO(firstName, null);
     	
     	//THEN
-        assertEquals(firstName, personInfoDTO.getFirstName());
+        assertEquals("firstName lastname", personInfoDTO.getName());
 	}
 
 	@Test
-	void test_setAndGetLastName_equalConstantString() {
+	void test_addAndGetHealthList() {
 
     	//GIVEN
-		String lastName = "lastName";
+		ArrayList<HealthDTO> healthList = new ArrayList<HealthDTO>();
         
     	//WHEN
-    	personInfoDTO = new PersonInfoDTO(null, lastName);
+		personInfoDTO.setHealthList(healthList);
     	
     	//THEN
-        assertEquals(lastName, personInfoDTO.getLastName());
-	}
-
-	@Test
-	void test_addAndGetHome_equalTrue() {
-
-    	//GIVEN
-        
-    	//WHEN
-		personInfoDTO.getHealths().add(healthDTO);
-    	
-    	//THEN
-        assertEquals(true, personInfoDTO.getHealths().contains(healthDTO));
+        assertEquals(healthList, personInfoDTO.getHealthList());
 	}
 }

@@ -1,15 +1,19 @@
 package com.safetynet.alerts.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.repository.FireStationRepository;
@@ -19,88 +23,88 @@ import com.safetynet.alerts.service.MedicalRecordService;
 
 @SpringBootTest
 class MedicalRecordControllerTest {
+	
+	private MockMvc mockMvc;
+	private MvcResult mvcResult;
+	   
+	@Autowired
+	private WebApplicationContext webApplicationContext;
 
 	private MedicalRecordController medicalRecordController;
 	
 	@Mock
-	private MedicalRecordService medicalRecordService;
-	@Mock
 	private MedicalRecord medicalRecord;
 	@Mock
-	private ArrayList<MedicalRecord> medicalRecords;
+	private MedicalRecordService medicalRecordService;
 	@Mock
 	private PersonRepository personRepository;
 	@Mock
 	private FireStationRepository fireStationRepository;
 	@Mock
 	private MedicalRecordRepository medicalRecordRepository;
-	
+    	
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
+
+    	mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     	
     	medicalRecordController = new MedicalRecordController(personRepository, fireStationRepository, medicalRecordRepository);
         ReflectionTestUtils.setField(medicalRecordController, "medicalRecordService", medicalRecordService);
     }
-    
+   
 	@Test
-	void test_getMedicalRecordList() {
+	void test_getMedicalRecordList() throws Exception {
 
     	//GIVEN
         
     	//WHEN
-		when(medicalRecordService.getMedicalRecordList(medicalRecordRepository)).thenReturn(medicalRecords);
+		mvcResult = mockMvc.perform(get("/medicalRecord")).andReturn();
 		
     	//THEN
-        assertEquals(medicalRecords, medicalRecordController.getMedicalRecordList());
+		assertEquals(200, mvcResult.getResponse().getStatus());
 	}
     
 	@Test
-	void test_addMedicalRecord() {
-
-    	//GIVEN
-        
-    	//WHEN
-		when(medicalRecordService.addMedicalRecord(medicalRecordRepository, medicalRecord)).thenReturn(medicalRecord);
-    	
-    	//THEN
-        assertEquals(medicalRecord, medicalRecordController.addMedicalRecord(medicalRecord));
-	}
-    
-	@Test
-	void test_updateMedicalRecord() {
-
-    	//GIVEN
-        
-    	//WHEN
-		when(medicalRecordService.updateMedicalRecord(medicalRecordRepository, medicalRecord)).thenReturn(medicalRecord);
-    	
-    	//THEN
-        assertEquals(medicalRecord, medicalRecordController.updateMedicalRecord(medicalRecord));
-	}
-    
-	@Test
-	void test_removeMedicalRecord() {
-
-    	//GIVEN
-        
-    	//WHEN
-		when(medicalRecordService.removeMedicalRecord(medicalRecordRepository, medicalRecord)).thenReturn(medicalRecord);
-    	
-    	//THEN
-        assertEquals(medicalRecord, medicalRecordController.removeMedicalRecord(medicalRecord));
-	}
-    
-	@Test
-	void test_personInfo() {
+	@Disabled
+	void test_addMedicalRecord() throws Exception {
 		
     	//GIVEN
-		String name = new String("name");
-		String personInfo = new String("personInfo");
         
     	//WHEN
-		when(medicalRecordService.getPersonInfo(personRepository, medicalRecordRepository, name)).thenReturn(personInfo);
     	
     	//THEN
-        assertEquals(personInfo, medicalRecordController.personInfo(name));
+	}
+    
+	@Test
+	@Disabled
+	void test_updateMedicalRecord() throws Exception {
+
+    	//GIVEN
+        
+    	//WHEN
+    	
+    	//THEN
+	}
+    
+	@Test
+	@Disabled
+	void test_removeMedicalRecord() throws Exception {
+
+    	//GIVEN
+        
+    	//WHEN
+    	
+    	//THEN
+	}
+    
+	@Test
+	@Disabled
+	void test_personInfo() throws Exception {
+		
+    	//GIVEN
+        
+    	//WHEN
+    	
+    	//THEN
 	}
 }

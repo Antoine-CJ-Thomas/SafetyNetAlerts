@@ -1,10 +1,7 @@
 package com.safetynet.alerts.controller;
 
-import java.util.ArrayList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jsoniter.output.JsonStream;
+import com.safetynet.alerts.dto.PersonInfoDTO;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
@@ -27,46 +26,41 @@ public class MedicalRecordController {
 
     private static final Logger logger = LogManager.getLogger("MedicalRecordController");
 
-	@Autowired
-	private MedicalRecordService medicalRecordService;
-
-	private static PersonRepository personRepository;
-	private static FireStationRepository fireStationRepository;
-	private static MedicalRecordRepository medicalRecordRepository;
+	private static MedicalRecordService medicalRecordService;
 
 	public MedicalRecordController(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
-		MedicalRecordController.personRepository = personRepository;
-		MedicalRecordController.fireStationRepository = fireStationRepository;
-		MedicalRecordController.medicalRecordRepository = medicalRecordRepository;
+        logger.info("MedicalRecordController(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");
+        
+        medicalRecordService = new MedicalRecordService(personRepository, fireStationRepository, medicalRecordRepository);
 	}
 
 	@GetMapping("/medicalRecord")
-	public ArrayList<MedicalRecord> getMedicalRecordList() {
+	public String getMedicalRecordList() {
         logger.info("getMedicalRecordList()");
-		return medicalRecordService.getMedicalRecordList(medicalRecordRepository);
+		return JsonStream.serialize(medicalRecordService.getMedicalRecordList());
 	}
 
 	@PostMapping("/medicalRecord")
-	public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+	public String addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         logger.info("addMedicalRecord()");
-		return medicalRecordService.addMedicalRecord(medicalRecordRepository, medicalRecord);
+		return JsonStream.serialize(medicalRecordService.addMedicalRecord(medicalRecord));
 	}
 
 	@PutMapping("/medicalRecord")
-	public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+	public String updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         logger.info("updateMedicalRecord()");
-		return medicalRecordService.updateMedicalRecord(medicalRecordRepository, medicalRecord);
+		return JsonStream.serialize(medicalRecordService.updateMedicalRecord(medicalRecord));
 	}
 
 	@DeleteMapping("/medicalRecord")
-	public MedicalRecord removeMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+	public String removeMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         logger.info("removeMedicalRecord()");
-		return medicalRecordService.removeMedicalRecord(medicalRecordRepository, medicalRecord);
+		return JsonStream.serialize(medicalRecordService.removeMedicalRecord(medicalRecord));
 	}
 
 	@GetMapping("/personInfo/{name}")
 	public String personInfo(@PathVariable("name") final String name) {
         logger.info("personInfo(" + name + ")");
-		return medicalRecordService.getPersonInfo(personRepository, medicalRecordRepository, name);
+		return JsonStream.serialize(medicalRecordService.getPersonInfo(new PersonInfoDTO(name)));
 	}
 }

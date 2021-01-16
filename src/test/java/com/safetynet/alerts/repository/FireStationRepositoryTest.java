@@ -2,11 +2,12 @@ package com.safetynet.alerts.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.repository.FireStationRepository;
 
@@ -16,15 +17,26 @@ class FireStationRepositoryTest {
 	private FireStationRepository fireStationRepository;
 
 	@Mock
-	private FireStation fireStation;
-	@Mock
-	private FireStation updatedFireStation;
+	private FireStation fireStation, updatedFireStation;
 
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
     	
     	fireStationRepository = new FireStationRepository();
     }
+
+	@Test
+	void test_getFireStationList() {
+
+    	//GIVEN
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
+        
+    	//WHEN
+		fireStationRepository.setFireStationList(fireStationList);
+    	
+    	//THEN
+        assertEquals(fireStationList, fireStationRepository.getFireStationList());
+	}
 
 	@Test
 	void test_addFireStation() {
@@ -32,10 +44,9 @@ class FireStationRepositoryTest {
     	//GIVEN
         
     	//WHEN
-		fireStationRepository.addFireStation(fireStation);
     	
     	//THEN
-        assertEquals(true, fireStationRepository.getFireStationList().contains(fireStation));
+        assertEquals(fireStation, fireStationRepository.addFireStation(fireStation));
 	}
 
 	@Test
@@ -45,10 +56,9 @@ class FireStationRepositoryTest {
         
     	//WHEN
 		fireStationRepository.addFireStation(fireStation);
-		fireStationRepository.updateFireStation(fireStationRepository.getFireStationList().indexOf(fireStation), updatedFireStation);
-    	
+
     	//THEN
-        assertEquals(true, fireStationRepository.getFireStationList().contains(updatedFireStation));
+        assertEquals(updatedFireStation, fireStationRepository.updateFireStation(0, updatedFireStation));
 	}
 
 	@Test
@@ -58,9 +68,8 @@ class FireStationRepositoryTest {
         
     	//WHEN
 		fireStationRepository.addFireStation(fireStation);
-		fireStationRepository.removeFireStation(fireStation);
     	
     	//THEN
-        assertEquals(false, fireStationRepository.getFireStationList().contains(fireStation));
+        assertEquals(fireStation, fireStationRepository.removeFireStation(0, fireStation));
 	}
 }

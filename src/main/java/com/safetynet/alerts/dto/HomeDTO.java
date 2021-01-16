@@ -8,8 +8,9 @@ import java.util.ArrayList;
 public class HomeDTO {
 	
 	private String address;
-	private ArrayList<InhabitantDTO> inhabitants = new ArrayList<InhabitantDTO>();
+	private ArrayList<InhabitantDTO> inhabitantList = new ArrayList<InhabitantDTO>();
 	
+
 	public HomeDTO(String address) {
 		this.address = address;
 	}
@@ -17,8 +18,12 @@ public class HomeDTO {
 	public String getAddress() {
 		return address;
 	}
+	
+	public void setInhabitantList(ArrayList<InhabitantDTO> inhabitantList) {
+		this.inhabitantList = inhabitantList;
+	}
 
-	public ArrayList<InhabitantDTO> getInhabitants() {
-		return inhabitants;
+	public ArrayList<InhabitantDTO> getInhabitantList() {
+		return inhabitantList;
 	}
 }

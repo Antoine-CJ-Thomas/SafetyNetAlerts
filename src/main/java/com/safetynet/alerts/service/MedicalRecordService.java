@@ -9,11 +9,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.jsoniter.output.JsonStream;
 import com.safetynet.alerts.dto.HealthDTO;
 import com.safetynet.alerts.dto.PersonInfoDTO;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
 
@@ -25,74 +25,68 @@ public class MedicalRecordService {
 
     private static final Logger logger = LogManager.getLogger("MedicalRecordService");
 
-	public ArrayList<MedicalRecord> getMedicalRecordList(MedicalRecordRepository medicalRecordRepository) {
-        logger.info("getMedicalRecordList(" + medicalRecordRepository + ")");
+	private PersonRepository personRepository;
+	private FireStationRepository fireStationRepository;
+	private MedicalRecordRepository medicalRecordRepository;
+
+    public MedicalRecordService(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
+        logger.info("MedicalRecordService(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");
+        
+    	this.personRepository = personRepository;
+		this.fireStationRepository = fireStationRepository;
+		this.medicalRecordRepository = medicalRecordRepository;
+    }
+
+	public ArrayList<MedicalRecord> getMedicalRecordList() {
+        logger.info("getMedicalRecordList()");
+        
 		return medicalRecordRepository.getMedicalRecordList();
 	}
 
-	public MedicalRecord addMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
-        logger.info("addMedicalRecord(" + medicalRecordRepository + ", " + medicalRecord + ")");
+	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
+        logger.info("addMedicalRecord(" + medicalRecord + ")");
+        		
 		return medicalRecordRepository.addMedicalRecord(medicalRecord);
 	}
 
-	public MedicalRecord updateMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
-        logger.info("updateMedicalRecord(" + medicalRecordRepository + ", " + medicalRecord + ")");
+	public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
+        logger.info("updateMedicalRecord(" + medicalRecord + ")");
 
-		MedicalRecord updatedMedicalRecord = null;
+		int index = -1;
 		
 		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
-				updatedMedicalRecord = m;
+				index = medicalRecordRepository.getMedicalRecordList().indexOf(m);
 				break;
 			}
-		}		
-		return medicalRecordRepository.updateMedicalRecord(medicalRecordRepository.getMedicalRecordList().indexOf(updatedMedicalRecord), medicalRecord);
+		}	
+		
+		return medicalRecordRepository.updateMedicalRecord(index, medicalRecord);
 	}
 
-	public MedicalRecord removeMedicalRecord(MedicalRecordRepository medicalRecordRepository, MedicalRecord medicalRecord) {
-        logger.info("removeMedicalRecord(" + medicalRecordRepository + ", " + medicalRecord + ")");
+	public MedicalRecord removeMedicalRecord(MedicalRecord medicalRecord) {
+        logger.info("removeMedicalRecord(" + medicalRecord + ")");
 
-		MedicalRecord deletedMedicalRecord = null;
+		int index = -1;
 
 		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(medicalRecord.getFirstName()) && m.getLastName().equals(medicalRecord.getLastName())) {
-				deletedMedicalRecord = m;
+				index = medicalRecordRepository.getMedicalRecordList().indexOf(m);
 				break;
 			}
 		}
-		return medicalRecordRepository.removeMedicalRecord(deletedMedicalRecord);
+		
+		return medicalRecordRepository.removeMedicalRecord(index, medicalRecord);
 	}
 	
-	public String getPersonInfo(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, String name) {
-        logger.info("getPersonInfo(" + personRepository + ", " + medicalRecordRepository + ", " + name + ")");
+	public String getAge(String firstName, String lastName) {
+        logger.info("getAge(" + firstName + ", " + lastName + ")");
 
-	    String[] namePart = name.split(" ");
-	    
-		String firstName = namePart[0];
-		String lastName = namePart[1];
-		
-		PersonInfoDTO personInfoResponse = new PersonInfoDTO(firstName, lastName);
-		MedicalRecordService medicalRecordService = new MedicalRecordService();
-		
-		for (Person p : personRepository.getPersonList()) {
-
-			if (p.getLastName().equals(lastName)) {
-				
-				personInfoResponse.getHealths().add(new HealthDTO(p.getLastName(), p.getAddress(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
-	
-			}
-		}
-		return JsonStream.serialize(personInfoResponse);
-	}
-	
-	public String getAge(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
-        logger.info("getAge(" + medicalRecordRepository + ", " + firstName + ", " + lastName + ")");
-
+	    String age = null;
 		LocalDate birthdate = null;
 		LocalDate now = LocalDate.now();
-	    String age = null;
 		
 		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
@@ -103,36 +97,57 @@ public class MedicalRecordService {
 				break;
 			}
 		}	
+		
 		return age;
 	}
 	
-	public ArrayList<String> getMedicationList(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
-        logger.info("getMedicationList(" + medicalRecordRepository + ", " + firstName + ", " + lastName + ")");
+	public ArrayList<String> getMedicationList(String firstName, String lastName) {
+        logger.info("getMedicationList(" + firstName + ", " + lastName + ")");
 
 		ArrayList<String> medications = null;
 		
 		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(firstName) && m.getLastName().equals(lastName)) {
-				medications = m.getMedications();
+				medications = m.getMedicationList();
 				break;
 			}
 		}	
+		
 		return medications;
 	}
 	
-	public ArrayList<String> getAllergieList(MedicalRecordRepository medicalRecordRepository, String firstName, String lastName) {
-        logger.info("getAllergieList(" + medicalRecordRepository + ", " + firstName + ", " + lastName + ")");
+	public ArrayList<String> getAllergieList(String firstName, String lastName) {
+        logger.info("getAllergieList(" + firstName + ", " + lastName + ")");
 
 		ArrayList<String> allergies = null;
 		
 		for (MedicalRecord m : medicalRecordRepository.getMedicalRecordList()) {
 
 			if (m.getFirstName().equals(firstName) && m.getLastName().equals(lastName)) {
-				allergies = m.getAllergies();
+				allergies = m.getAllergieList();
 				break;
 			}
 		}	
+		
 		return allergies;
+	}
+	
+	public PersonInfoDTO getPersonInfo(PersonInfoDTO personInfoDTO) {
+        logger.info("getPersonInfo(" + personInfoDTO + ")");
+
+	    String[] namePart = personInfoDTO.getName().split(" ");
+	    
+		String lastName = namePart[1];
+		
+		for (Person p : personRepository.getPersonList()) {
+
+			if (p.getLastName().equals(lastName)) {
+				
+				personInfoDTO.getHealthList().add(new HealthDTO(p.getLastName(), p.getAddress(), getAge(p.getFirstName(), p.getLastName()), getMedicationList(p.getFirstName(), p.getLastName()), getAllergieList(p.getFirstName(), p.getLastName())));
+			}
+		}
+		
+		return personInfoDTO;
 	}
 }

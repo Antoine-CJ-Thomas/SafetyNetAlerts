@@ -2,6 +2,7 @@ package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,30 +12,32 @@ import com.safetynet.alerts.dto.AdultDTO;
 class AdultDTOTest {
 
 	private AdultDTO adultDTO;
+
+    @BeforeEach
+    private void beforeEach() {
+
+    	adultDTO = new AdultDTO("firstName", "lastName");
+    }
     
 	@Test
-	void test_setAndGetFirstName_equalConstantString() {
+	void test_setAndGetFirstName() {
 
     	//GIVEN
-		String firstName = "firstName";
         
     	//WHEN
-    	adultDTO = new AdultDTO(firstName, null);
     	
     	//THEN
-        assertEquals(firstName, adultDTO.getFirstName());
+        assertEquals("firstName", adultDTO.getFirstName());
 	}
 
 	@Test
-	void test_setAndGetLastName_equalConstantString() {
+	void test_setAndGetLastName() {
 
     	//GIVEN
-		String lastName = "lastName";
         
     	//WHEN
-    	adultDTO = new AdultDTO(null, lastName);
     	
     	//THEN
-        assertEquals(lastName, adultDTO.getLastName());
+        assertEquals("lastName", adultDTO.getLastName());
 	}
 }

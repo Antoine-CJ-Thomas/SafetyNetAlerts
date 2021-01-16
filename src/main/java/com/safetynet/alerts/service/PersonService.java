@@ -6,14 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.jsoniter.output.JsonStream;
 import com.safetynet.alerts.dto.AdultDTO;
-import com.safetynet.alerts.dto.ChildAlertDTO;
 import com.safetynet.alerts.dto.ChildDTO;
-import com.safetynet.alerts.dto.FireAlertDTO;
-import com.safetynet.alerts.dto.FloodAlertDTO;
+import com.safetynet.alerts.dto.ChildInfoDTO;
+import com.safetynet.alerts.dto.CommunityEmailInfoDTO;
+import com.safetynet.alerts.dto.FireInfoDTO;
+import com.safetynet.alerts.dto.FloodInfoDTO;
 import com.safetynet.alerts.dto.HomeDTO;
 import com.safetynet.alerts.dto.InhabitantDTO;
+import com.safetynet.alerts.dto.PhoneInfoDTO;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
@@ -28,170 +29,166 @@ public class PersonService {
 
     private static final Logger logger = LogManager.getLogger("PersonService");
 
-	public ArrayList<Person> getPersonList(PersonRepository personRepository) {
-        logger.info("getPersonList(" + personRepository + ")");
+	private PersonRepository personRepository;
+	private FireStationRepository fireStationRepository;
+	private MedicalRecordRepository medicalRecordRepository;
+
+    public PersonService(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
+        logger.info("PersonService(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");
+        
+    	this.personRepository = personRepository;
+		this.fireStationRepository = fireStationRepository;
+		this.medicalRecordRepository = medicalRecordRepository;
+    }
+
+	public ArrayList<Person> getPersonList() {
+        logger.info("getPersonList()");
 		return personRepository.getPersonList();
 	}
 
-	public Person addPerson(PersonRepository personRepository, Person person) {
-        logger.info("addPerson(" + personRepository + ", " + person + ")");
+	public Person addPerson(Person person) {
+        logger.info("addPerson(" + person + ")");
+        
 		return personRepository.addPerson(person);
 	}
 
-	public Person updatePerson(PersonRepository personRepository, Person person) {
-        logger.info("updatePerson(" + personRepository + ", " + person + ")");
+	public Person updatePerson(Person person) {
+        logger.info("updatePerson(" + person + ")");
 
-        int personIndex = -1;
+		int index = -1;
 		
 		for (Person p : personRepository.getPersonList()) {
 
 			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-				personIndex = personRepository.getPersonList().indexOf(p);
+				index = personRepository.getPersonList().indexOf(p);
 				break;
 			}
 		}
-		return personRepository.updatePerson(personIndex, person);
+		
+		return personRepository.updatePerson(index, person);
 		
 	}
 
-	public Person removePerson(PersonRepository personRepository, Person person) {
-        logger.info("removePerson(" + personRepository + ", " + person + ")");
+	public Person removePerson(Person person) {
+        logger.info("removePerson(" + person + ")");
 
-		Person deletedPerson = null;
+		int index = -1;
 
 		for (Person p : personRepository.getPersonList()) {
 
 			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
-				deletedPerson = p;
+				index = personRepository.getPersonList().indexOf(p);
 				break;
 			}
 		}
-		return personRepository.removePerson(deletedPerson);
+		
+		return personRepository.removePerson(index, person);
+	}
+
+	public ChildInfoDTO getChildAlertInfo(MedicalRecordService medicalRecordService, ChildInfoDTO childInfoDTO) {
+        logger.info("getFireInfo(" + medicalRecordService + ", " + childInfoDTO + ")");
+		
+		for (Person p : personRepository.getPersonList()) {
+
+			System.out.println(p);
+			
+			if (p.getAddress().equals(childInfoDTO.getAddress())) {
+				
+				if (Integer.parseInt(medicalRecordService.getAge(p.getFirstName(), p.getLastName())) <= 18) {
+					
+					childInfoDTO.getChildList().add(new ChildDTO(p.getFirstName(), p.getLastName(), medicalRecordService.getAge(p.getFirstName(), p.getLastName())));
+				}
+				
+				else {
+
+					childInfoDTO.getAdultList().add(new AdultDTO(p.getFirstName(), p.getLastName()));
+				}			
+			}
+		}
+		
+		return childInfoDTO;
 	}
 	
-	public ArrayList<String> getPhoneList(PersonRepository personRepository, FireStationRepository fireStationRepository, String firestation) {
-        logger.info("getPhoneList(" + personRepository + ", " + fireStationRepository + ", " + firestation + ")");
-
-		ArrayList<String> firestationAdressList = new ArrayList<String>();
+	public PhoneInfoDTO getPhoneInfo(PhoneInfoDTO phoneInfoDTO) {
+        logger.info("getPhoneList(" + phoneInfoDTO + ")");
 
 		for (FireStation f : fireStationRepository.getFireStationList()) {
 
-			if (f.getStation().equals(firestation)) {
+			if (f.getStation().equals(phoneInfoDTO.getStation())) {
 				
-				firestationAdressList.add(f.getAddress());
+				phoneInfoDTO.getAddressList().add(f.getAddress());
 			}
 		}
 		
-		ArrayList<String> phoneList = new ArrayList<String>();
-
 		for (Person p : personRepository.getPersonList()) {
 
-			if (firestationAdressList.contains(p.getAddress())) {
+			if (phoneInfoDTO.getAddressList().contains(p.getAddress())) {
 				
-				phoneList.add(p.getPhone());
+				phoneInfoDTO.getPhoneList().add(p.getPhone());
 			}
 		}
-		return phoneList;
+		return phoneInfoDTO;
 	}
 	
-	public ArrayList<String> getCommunityEmailList(PersonRepository personRepository, String city) {
-        logger.info("getCommunityEmailList(" + personRepository + ", " + city + ")");
+	public FireInfoDTO getFireInfo(MedicalRecordService medicalRecordService, FireInfoDTO fireInfoDTO) {
+        logger.info("getFireInfo(" + medicalRecordService + ", " + fireInfoDTO + ")");
 		
-		ArrayList<String> emailList = new ArrayList<String>();
-
-		for (Person p : personRepository.getPersonList()) {
-
-			if (p.getCity().equals(city)) {
-				
-				emailList.add(p.getEmail());
-			}
-		}
-		return emailList;
-	}
-	
-	public String getFireInfo(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String adress) {
-        logger.info("getFireInfo(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + adress + ")");
-		
-		String stationNumber = null;
-
 		for (FireStation f : fireStationRepository.getFireStationList()) {
 
-			if (f.getAddress().equals(adress)) {
+			if (f.getAddress().equals(fireInfoDTO.getAddress())) {
 				
-				stationNumber = f.getStation();
+				fireInfoDTO.setStation(f.getStation());
 			}
 		}
-		
-		FireAlertDTO fireAlertDTO = new FireAlertDTO(adress, stationNumber);
-		MedicalRecordService medicalRecordService = new MedicalRecordService();
 
 		for (Person p : personRepository.getPersonList()) {
 
-			if (p.getAddress().equals(adress)) {
+			if (p.getAddress().equals(fireInfoDTO.getAddress())) {
 								
-				fireAlertDTO.getInhabitants().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
+				fireInfoDTO.getInhabitantList().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(p.getFirstName(), p.getLastName())));
 			}
 		}
-		return JsonStream.serialize(fireAlertDTO);
+		return fireInfoDTO;
 	}
 	
-	public String getFloodInfo(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String firestation) {
-        logger.info("getFloodInfo(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + firestation + ")");
-		
-		ArrayList<String> fireStationAddressList = new ArrayList<String>();
-		
+	public FloodInfoDTO getFloodInfo(MedicalRecordService medicalRecordService, FloodInfoDTO floodInfoDTO) {
+        logger.info("getFireInfo(" + medicalRecordService + ", " + floodInfoDTO + ")");
+				
 		for (FireStation f: fireStationRepository.getFireStationList()) {
 			
-			if (f.getStation().equals(firestation)) {
+			if (floodInfoDTO.getStationList().contains(f.getStation())) {
 				
-				fireStationAddressList.add(f.getAddress());
+				floodInfoDTO.getAddressList().add(f.getAddress());
 			}
 		}
-		
-		FloodAlertDTO floodInfoResponse = new FloodAlertDTO(firestation);
-		MedicalRecordService medicalRecordService = new MedicalRecordService();
-		
-		for (String s : fireStationAddressList) {
-			
-			HomeDTO home = new HomeDTO(s);
-			
-			floodInfoResponse.getHomes().add(home);
+					
+		for (String s : floodInfoDTO.getAddressList()) {
+						
+			floodInfoDTO.getHomeList().add(new HomeDTO(s));
 			
 			for (Person p : personRepository.getPersonList()) {
 
 				if (p.getAddress().equals(s)) {
 									
-					home.getInhabitants().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(medicalRecordRepository, p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(medicalRecordRepository, p.getFirstName(), p.getLastName())));
+					floodInfoDTO.getHomeList().get(floodInfoDTO.getHomeList().size()-1).getInhabitantList().add(new InhabitantDTO(p.getLastName(), p.getPhone(), medicalRecordService.getAge(p.getFirstName(), p.getLastName()), medicalRecordService.getMedicationList(p.getFirstName(), p.getLastName()), medicalRecordService.getAllergieList(p.getFirstName(), p.getLastName())));
 				}
 			}
 		}
 		
-		return JsonStream.serialize(floodInfoResponse);
+		return floodInfoDTO;
 	}
-
-	public String getChildAlertInfo(PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, String adress) {
-        logger.info("getChildAlertInfo(" + personRepository + ", " + medicalRecordRepository + ", " + adress + ")");
-
-		ChildAlertDTO childAlertResponse = new ChildAlertDTO(adress);
-		MedicalRecordService medicalRecordService = new MedicalRecordService();
+	
+	public CommunityEmailInfoDTO getCommunityEmailInfo(CommunityEmailInfoDTO communityEmailInfoDTO) {
+        logger.info("getCommunityEmailList(" + communityEmailInfoDTO + ")");
 		
 		for (Person p : personRepository.getPersonList()) {
 
-			if (p.getAddress().equals(adress)) {
+			if (p.getCity().equals(communityEmailInfoDTO.getCity())) {
 				
-				if (Integer.parseInt(medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName())) <= 18) {
-					
-					childAlertResponse.getChilds().add(new ChildDTO(p.getFirstName(), p.getLastName(), medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName())));
-				}
-				
-				else {
-
-					childAlertResponse.getAdults().add(new AdultDTO(p.getFirstName(), p.getLastName()));
-					
-				}			
+				communityEmailInfoDTO.getEmailList().add(p.getEmail());
 			}
 		}
 		
-		return JsonStream.serialize(childAlertResponse);
+		return communityEmailInfoDTO;
 	}
 }

@@ -2,6 +2,7 @@ package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,56 +12,54 @@ import com.safetynet.alerts.dto.ContactDTO;
 class ContactDTOTest {
 
 	private ContactDTO contactDTO;
-    
+
+    @BeforeEach
+    private void beforeEach() {
+
+    	contactDTO = new ContactDTO("firstName", "lastName", "address", "phone");
+    }
+
 	@Test
-	void test_setAndGetFirstName_equalConstantString() {
+	void test_setAndGetFirstName() {
 
     	//GIVEN
-		String firstName = "firstName";
         
     	//WHEN
-    	contactDTO = new ContactDTO(firstName, null, null, null);
     	
     	//THEN
-        assertEquals(firstName, contactDTO.getFirstName());
+        assertEquals("firstName", contactDTO.getFirstName());
 	}
 
 	@Test
-	void test_setAndGetLastName_equalConstantString() {
+	void test_setAndGetLastName() {
 
     	//GIVEN
-		String lastName = "lastName";
         
     	//WHEN
-    	contactDTO = new ContactDTO(null, lastName, null, null);
     	
     	//THEN
-        assertEquals(lastName, contactDTO.getLastName());
+        assertEquals("lastName", contactDTO.getLastName());
 	}
 
 	@Test
-	void test_setAndGetAddress_equalConstantString() {
+	void test_setAndGetAddress() {
 
     	//GIVEN
-		String address = "address";
         
     	//WHEN
-    	contactDTO = new ContactDTO(null, null, address, null);
     	
     	//THEN
-        assertEquals(address, contactDTO.getAddress());
+        assertEquals("address", contactDTO.getAddress());
 	}
 
 	@Test
-	void test_setAndGetPhone_equalConstantString() {
+	void test_setAndGetPhone() {
 
     	//GIVEN
-		String phone = "phone";
         
     	//WHEN
-    	contactDTO = new ContactDTO(null, null, null, phone);
     	
     	//THEN
-        assertEquals(phone, contactDTO.getPhone());
+        assertEquals("phone", contactDTO.getPhone());
 	}
 }

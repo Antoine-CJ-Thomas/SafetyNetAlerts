@@ -16,28 +16,33 @@ public class FireStationRepository {
 
     private static final Logger logger = LogManager.getLogger("FireStationRepository");
 
-	private ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+	private ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
+
+	public void setFireStationList(ArrayList<FireStation> fireStationList) {
+        logger.info("setFireStationList(" + fireStationList + ")");
+		this.fireStationList = fireStationList;
+	}
 
 	public ArrayList<FireStation> getFireStationList() {
         logger.info("getFireStationList()");
-		return fireStations;
+		return fireStationList;
 	}
 
 	public FireStation addFireStation(FireStation fireStation) {
         logger.info("addFireStation(" + fireStation + ")");
-		fireStations.add(fireStation);
+        fireStationList.add(fireStation);
 		return fireStation;
 	}
 
 	public FireStation updateFireStation(int index, FireStation fireStation) {
-        logger.info("updateFireStation(" + fireStation + ")");
-		fireStations.set(index, fireStation);
+        logger.info("updateFireStation(" + index + ", " + fireStation + ")");
+        fireStationList.set(index, fireStation);
 		return fireStation;
 	}
 
-	public FireStation removeFireStation(FireStation fireStation) {
-        logger.info("removeFireStation(" + fireStation + ")");
-		fireStations.remove(fireStation);
+	public FireStation removeFireStation(int index, FireStation fireStation) {
+        logger.info("removeFireStation(" + index + ", " + fireStation + ")");
+        fireStationList.remove(index);
 		return fireStation;
 	}
 }

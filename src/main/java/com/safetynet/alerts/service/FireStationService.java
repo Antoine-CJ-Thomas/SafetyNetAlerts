@@ -6,9 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.jsoniter.output.JsonStream;
 import com.safetynet.alerts.dto.ContactDTO;
-import com.safetynet.alerts.dto.FirestationCoverageDTO;
+import com.safetynet.alerts.dto.FirestationCoverageInfoDTO;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
@@ -23,88 +22,96 @@ public class FireStationService {
 
     private static final Logger logger = LogManager.getLogger("FireStationService");
 
-	public ArrayList<FireStation> getFireStationList(FireStationRepository fireStationRepository) {
-        logger.info("getFireStationList(" + fireStationRepository + ")");
+	private PersonRepository personRepository;
+	private FireStationRepository fireStationRepository;
+	private MedicalRecordRepository medicalRecordRepository;
+
+    public FireStationService(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
+        logger.info("FireStationService(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");
+        
+    	this.personRepository = personRepository;
+		this.fireStationRepository = fireStationRepository;
+		this.medicalRecordRepository = medicalRecordRepository;
+    }
+    
+	public ArrayList<FireStation> getFireStationList() {
+        logger.info("getFireStationList()");
+        
 		return fireStationRepository.getFireStationList();
 	}
 
-	public FireStation addFireStation(FireStationRepository fireStationRepository, FireStation fireStation) {
+	public FireStation addFireStation(FireStation fireStation) {
         logger.info("addFireStation(" + fireStationRepository + ", " + fireStation + ")");
+        
 		return fireStationRepository.addFireStation(fireStation);
 	}
 
-	public FireStation updateFireStation(FireStationRepository fireStationRepository, FireStation fireStation) {
-        logger.info("updateFireStation(" + fireStationRepository + ", " + fireStation + ")");
+	public FireStation updateFireStation(FireStation fireStation) {
+        logger.info("updateFireStation(" + fireStation + ")");
 
-		FireStation updatedFireStation = null;
+		int index = -1;
 		
 		for (FireStation f : fireStationRepository.getFireStationList()) {
 
-			if (f.getAddress().equals(fireStation.getAddress())) {
-				updatedFireStation = f;
+			if (f.getAddress().equals(fireStation.getAddress())) {				
+				index = fireStationRepository.getFireStationList().indexOf(f);
 				break;
 			}
-		}		
-		return fireStationRepository.updateFireStation(fireStationRepository.getFireStationList().indexOf(updatedFireStation), fireStation);
+		}	
+		
+		return fireStationRepository.updateFireStation(index, fireStation);
 	}
 
-	public FireStation removeFireStation(FireStationRepository fireStationRepository, FireStation fireStation) {
-        logger.info("removeFireStation(" + fireStationRepository + ", " + fireStation + ")");
+	public FireStation removeFireStation(FireStation fireStation) {
+        logger.info("removeFireStation(" + fireStation + ")");
 
-		FireStation deletedFireStation = null;
+		int index = -1;
 
 		for (FireStation f : fireStationRepository.getFireStationList()) {
 
 			if (f.getAddress().equals(fireStation.getAddress())) {
-				deletedFireStation = f;
+				index = fireStationRepository.getFireStationList().indexOf(f);
 				break;
 			}
 		}
-		return fireStationRepository.removeFireStation(deletedFireStation);
+		
+		return fireStationRepository.removeFireStation(index, fireStation);
 	}
 
-	public String getFirestationCoverage(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository, String firestation) {
-        logger.info("getFirestationCoverage(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ", " + firestation + ")");
-
-		ArrayList<String> firestationAdressList = new ArrayList<String>();
+	public FirestationCoverageInfoDTO getFirestationCoverage(MedicalRecordService medicalRecordService, FirestationCoverageInfoDTO firestationCoverageInfoDTO) {
+        logger.info("getPersonInfo(" + medicalRecordService + ", " + firestationCoverageInfoDTO + ")");
 
 		for (FireStation f : fireStationRepository.getFireStationList()) {
 
-			if (f.getStation().equals(firestation)) {
+			if (f.getStation().equals(firestationCoverageInfoDTO.getStation())) {
 				
-				firestationAdressList.add(f.getAddress());
+				firestationCoverageInfoDTO.getAddressList().add(f.getAddress());
 			}
 		}
-		
-		ArrayList<Person> personList = new ArrayList<Person>();
-		FirestationCoverageDTO firestationCoverageDTO = new FirestationCoverageDTO(firestation);
 
 		for (Person p : personRepository.getPersonList()) {
 
-			if (firestationAdressList.contains(p.getAddress())) {
+			if (firestationCoverageInfoDTO.getAddressList().contains(p.getAddress())) {
 
-				personList.add(p);
+				firestationCoverageInfoDTO.getPersonList().add(p);
 			}
 		}
-
-		MedicalRecordService medicalRecordService = new MedicalRecordService();
 		
-		for (Person p : personList) {
+		for (Person p : firestationCoverageInfoDTO.getPersonList()) {
 
-			firestationCoverageDTO.getContacts().add(new ContactDTO(p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone()));
+			firestationCoverageInfoDTO.getContactList().add(new ContactDTO(p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone()));
 			
-			if (Integer.parseInt(medicalRecordService.getAge(medicalRecordRepository, p.getFirstName(), p.getLastName())) <= 18) {
+			if (Integer.parseInt(medicalRecordService.getAge(p.getFirstName(), p.getLastName())) <= 18) {
 				
-				firestationCoverageDTO.increaseChildCounter();
+				firestationCoverageInfoDTO.increaseChildCounter();
 			}
 			
 			else {
 
-				firestationCoverageDTO.increaseAdultCounter();
-						
+				firestationCoverageInfoDTO.increaseAdultCounter();
 			}
 		}
 		
-		return JsonStream.serialize(firestationCoverageDTO);
+		return firestationCoverageInfoDTO;
 	}
 }

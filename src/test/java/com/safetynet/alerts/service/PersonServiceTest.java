@@ -7,14 +7,18 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import com.jsoniter.output.JsonStream;
-import com.safetynet.alerts.dto.FireAlertDTO;
+import com.safetynet.alerts.dto.AdultDTO;
+import com.safetynet.alerts.dto.ChildDTO;
+import com.safetynet.alerts.dto.ChildInfoDTO;
+import com.safetynet.alerts.dto.CommunityEmailInfoDTO;
+import com.safetynet.alerts.dto.FireInfoDTO;
+import com.safetynet.alerts.dto.FloodInfoDTO;
+import com.safetynet.alerts.dto.HomeDTO;
+import com.safetynet.alerts.dto.PhoneInfoDTO;
 import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
@@ -28,13 +32,9 @@ class PersonServiceTest {
 	private PersonService personService;
 
 	@Mock
-	private MedicalRecordService medicalRecordService;
+	private Person person, personChild, personFromList;
 	@Mock
-	private Person personFromList;
-	@Mock
-	private Person person;
-	@Mock
-	private FireStation fireStation;
+	private FireStation fireStation, fireStationFromList;
 	@Mock
 	private PersonRepository personRepository;
 	@Mock
@@ -42,25 +42,35 @@ class PersonServiceTest {
 	@Mock
 	private MedicalRecordRepository medicalRecordRepository;
 	@Mock
-	private FireAlertDTO fireAlertDTO;
+	private MedicalRecordService medicalRecordService;
+	@Mock
+	private PhoneInfoDTO phoneInfoDTO;
+	@Mock
+	private CommunityEmailInfoDTO communityEmailInfoDTO;
+	@Mock
+	private FireInfoDTO fireInfoDTO;
+	@Mock
+	private FloodInfoDTO floodInfoDTO;
+	@Mock
+	private ChildInfoDTO childInfoDTO;
 
     @BeforeEach
-    private void setUpPerTest() {
-    	
-    	personService = new PersonService();
+    private void beforeEach() {
+
+    	personService = new PersonService(personRepository, fireStationRepository, medicalRecordRepository);
     }
 
 	@Test
 	void test_getPersonList() {
 
     	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
+		ArrayList<Person> personList = new ArrayList<Person>();
         
     	//WHEN
-		when(personRepository.getPersonList()).thenReturn(persons);
+		when(personRepository.getPersonList()).thenReturn(personList);
     	
     	//THEN
-        assertEquals(persons, personService.getPersonList(personRepository));
+        assertEquals(personList, personService.getPersonList());
 	}
     
 	@Test
@@ -72,266 +82,169 @@ class PersonServiceTest {
 		when(personRepository.addPerson(any(Person.class))).thenReturn(person);
     	
     	//THEN
-        assertEquals(person, personService.addPerson(personRepository, person));
+        assertEquals(person, personService.addPerson(person));
 	}
     
 	@Test
-	void test_updatePerson_withRepositoryDifferentName() {
+	void test_updatePerson() {
 
     	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-        
-    	//WHEN
-		when(person.getFirstName()).thenReturn("firstname");
-		when(person.getLastName()).thenReturn("lastname");
-		when(personFromList.getFirstName()).thenReturn("another firstname");
-		when(personFromList.getLastName()).thenReturn("another lastname");
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(personRepository.updatePerson(any(Integer.class), any(Person.class))).thenReturn(person);
-		persons.add(personFromList);
-		
-    	//THEN
-        assertEquals(person, personService.updatePerson(personRepository, person));
-	}
-    
-	@Test
-	void test_updatePerson_withLastDifferentLastName() {
-
-    	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-        
-    	//WHEN
-		when(person.getFirstName()).thenReturn("firstname");
-		when(person.getLastName()).thenReturn("lastname");
-		when(personFromList.getFirstName()).thenReturn("firstname");
-		when(personFromList.getLastName()).thenReturn("another lastname");
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(personRepository.updatePerson(any(Integer.class), any(Person.class))).thenReturn(person);
-		persons.add(personFromList);
-		
-    	//THEN
-        assertEquals(person, personService.updatePerson(personRepository, person));
-	}
-    
-	@Test
-	void test_updatePerson_withSameName() {
-
-    	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
+		ArrayList<Person> personList = new ArrayList<Person>();
         
     	//WHEN
 		when(person.getFirstName()).thenReturn("firstname");
 		when(person.getLastName()).thenReturn("lastname");
 		when(personFromList.getFirstName()).thenReturn("firstname");
 		when(personFromList.getLastName()).thenReturn("lastname");
-		when(personRepository.getPersonList()).thenReturn(persons);
+		when(personRepository.getPersonList()).thenReturn(personList);
 		when(personRepository.updatePerson(any(Integer.class), any(Person.class))).thenReturn(person);
-		persons.add(personFromList);
+		personList.add(personFromList);
 		
     	//THEN
-        assertEquals(person, personService.updatePerson(personRepository, person));
+        assertEquals(person, personService.updatePerson(person));
 	}
+	
     
 	@Test
-	void test_removePerson_DifferentLastName() {
+	void test_removePerson() {
 
     	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-        
-    	//WHEN
-		when(person.getFirstName()).thenReturn("firstname");
-		when(person.getLastName()).thenReturn("lastname");
-		when(personFromList.getFirstName()).thenReturn("another firstname");
-		when(personFromList.getLastName()).thenReturn("another lastname");
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(personRepository.removePerson(null)).thenReturn(person);
-		persons.add(personFromList);
-		
-    	//THEN
-        assertEquals(person, personService.removePerson(personRepository, person));
-	}
-    
-	@Test
-	void test_removePerson_withLastDifferentLastName() {
-
-    	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-        
-    	//WHEN
-		when(person.getFirstName()).thenReturn("firstname");
-		when(person.getLastName()).thenReturn("lastname");
-		when(personFromList.getFirstName()).thenReturn("firstname");
-		when(personFromList.getLastName()).thenReturn("another lastname");
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(personRepository.removePerson(null)).thenReturn(person);
-		persons.add(personFromList);
-		
-    	//THEN
-        assertEquals(person, personService.removePerson(personRepository, person));
-	}
-    
-	@Test
-	void test_removePerson_withSameName() {
-
-    	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
+		ArrayList<Person> personList = new ArrayList<Person>();
         
     	//WHEN
 		when(person.getFirstName()).thenReturn("firstname");
 		when(person.getLastName()).thenReturn("lastname");
 		when(personFromList.getFirstName()).thenReturn("firstname");
 		when(personFromList.getLastName()).thenReturn("lastname");
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(personRepository.removePerson(any(Person.class))).thenReturn(person);
-		persons.add(personFromList);
+		when(personRepository.getPersonList()).thenReturn(personList);
+		when(personRepository.removePerson(any(Integer.class), any(Person.class))).thenReturn(person);
+		personList.add(personFromList);
 		
     	//THEN
-        assertEquals(person, personService.removePerson(personRepository, person));
+        assertEquals(person, personService.removePerson(person));
 	}
     
 	@Test
-	void test_getPhoneList_withDifferentStationNumber() {
+	void test_getPhoneInfo() {
 
     	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-		ArrayList<String> phoneList = new ArrayList<String>();
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+		ArrayList<Person> personList = new ArrayList<Person>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
+		ArrayList<String> addressList = new ArrayList<String>();
         
     	//WHEN
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStation.getStation()).thenReturn("2");
-		fireStations.add(fireStation);
-
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(person.getAddress()).thenReturn("address");
-		persons.add(person);
+		when(personFromList.getAddress()).thenReturn("address");
+		when(fireStationFromList.getStation()).thenReturn("1");
+		when(phoneInfoDTO.getStation()).thenReturn("1");
+		when(phoneInfoDTO.getAddressList()).thenReturn(addressList);
+		when(fireStationFromList.getAddress()).thenReturn("address");
+		when(personRepository.getPersonList()).thenReturn(personList);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
+		personList.add(personFromList);
+		fireStationList.add(fireStationFromList);
 		
     	//THEN
-        assertEquals(phoneList, personService.getPhoneList(personRepository, fireStationRepository, "1"));
+        assertEquals(phoneInfoDTO, personService.getPhoneInfo(phoneInfoDTO));
 	}
     
 	@Test
-	void test_getPhoneList_withDifferentAdress() {
+	void test_getCommunityEmailInfo() {
 
     	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-		ArrayList<String> phoneList = new ArrayList<String>();
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+		ArrayList<Person> personList = new ArrayList<Person>();
         
     	//WHEN
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStation.getStation()).thenReturn("1");
-		when(fireStation.getAddress()).thenReturn("address");
-		fireStations.add(fireStation);
-
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(person.getAddress()).thenReturn("another address");
-		persons.add(person);
-		
+		when(personFromList.getCity()).thenReturn("city");
+		when(personFromList.getEmail()).thenReturn("email");
+		when(communityEmailInfoDTO.getCity()).thenReturn("city");
+		when(personRepository.getPersonList()).thenReturn(personList);
+		personList.add(personFromList);
 		
     	//THEN
-        assertEquals(phoneList, personService.getPhoneList(personRepository, fireStationRepository, "1"));
+        assertEquals(communityEmailInfoDTO, personService.getCommunityEmailInfo(communityEmailInfoDTO));
 	}
     
 	@Test
-	void test_getPhoneList_withSameStationNumberAndAdress() {
-
-    	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-		ArrayList<String> phoneList = new ArrayList<String>();
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
-        
-    	//WHEN
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStation.getStation()).thenReturn("1");
-		when(fireStation.getAddress()).thenReturn("address");
-		fireStations.add(fireStation);
-
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(person.getAddress()).thenReturn("address");
-		when(person.getPhone()).thenReturn("123-456-7890");
-		persons.add(person);
-		
-		phoneList.add("123-456-7890");
-		
-    	//THEN
-        assertEquals(phoneList, personService.getPhoneList(personRepository, fireStationRepository, "1"));
-	}
-    
-	@Test
-	void test_getCommunityEmailList_withDifferentCity() {
-
-    	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-		ArrayList<String> emailList = new ArrayList<String>();
-        
-    	//WHEN
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(person.getCity()).thenReturn("another city");
-		persons.add(person);
-		
-    	//THEN
-        assertEquals(emailList, personService.getCommunityEmailList(personRepository, "city"));
-	}
-    
-	@Test
-	void test_getCommunityEmailList_WithSameCity() {
-
-    	//GIVEN
-		ArrayList<String> emailList = new ArrayList<String>();
-		ArrayList<Person> persons = new ArrayList<Person>();
-        
-    	//WHEN
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(person.getCity()).thenReturn("city");
-		when(person.getEmail()).thenReturn("name@email.com");
-		persons.add(person);
-		
-		emailList.add("name@email.com");
-		
-    	//THEN
-        assertEquals(emailList, personService.getCommunityEmailList(personRepository, "city"));
-	}
-    
-	@Test
-	@Disabled
 	void test_getFireInfo() {
 
     	//GIVEN
-		ArrayList<Person> persons = new ArrayList<Person>();
-		ArrayList<FireStation> fireStations = new ArrayList<FireStation>();
+		ArrayList<Person> personList = new ArrayList<Person>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
 		ArrayList<String> medicationList = new ArrayList<String>();
-		ArrayList<String> allergieList = new ArrayList<String>();
         
     	//WHEN
-		when(personRepository.getPersonList()).thenReturn(persons);
-		when(person.getFirstName()).thenReturn("firstName");
-		when(person.getLastName()).thenReturn("lastName");
-		when(person.getAddress()).thenReturn("address");
-		persons.add(person);
-		
-		when(fireStationRepository.getFireStationList()).thenReturn(fireStations);
-		when(fireStation.getAddress()).thenReturn("address");
-		fireStations.add(fireStation);
-		
-		when(medicalRecordService.getAge(medicalRecordRepository, "firstName", "lastName")).thenReturn("18");
-		when(medicalRecordService.getMedicationList(medicalRecordRepository, "firstName", "lastName")).thenReturn(medicationList);
-		when(medicalRecordService.getAllergieList(medicalRecordRepository, "firstName", "lastName")).thenReturn(allergieList);
-//		ReflectionTestUtils.setField(personService.getFireInfo(personRepository, fireStationRepository, medicalRecordRepository, "address"), "medicalRecordService", medicalRecordService);
+		when(fireInfoDTO.getAddress()).thenReturn("address");
+		when(personFromList.getLastName()).thenReturn("lastname");
+		when(personFromList.getAddress()).thenReturn("address");
+		when(personFromList.getPhone()).thenReturn("phone");
+		when(fireStationFromList.getStation()).thenReturn("1");
+		when(fireStationFromList.getAddress()).thenReturn("address");
+		when(personRepository.getPersonList()).thenReturn(personList);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
+		when(medicalRecordService.getAge(any(String.class), any(String.class))).thenReturn("20");
+		when(medicalRecordService.getMedicationList(any(String.class), any(String.class))).thenReturn(medicationList);
+		when(medicalRecordService.getAllergieList(any(String.class), any(String.class))).thenReturn(medicationList);
+
+		personList.add(personFromList);
+		fireStationList.add(fireStationFromList);
 				
     	//THEN
-        assertEquals(JsonStream.serialize(fireAlertDTO), personService.getFireInfo(personRepository, fireStationRepository, medicalRecordRepository, "address"));
+        assertEquals(fireInfoDTO, personService.getFireInfo(medicalRecordService, fireInfoDTO));
 	}
     
 	@Test
-	@Disabled
 	void test_getFloodInfo() {
+
+    	//GIVEN
+		ArrayList<Person> personList = new ArrayList<Person>();
+		ArrayList<FireStation> fireStationList = new ArrayList<FireStation>();
+		ArrayList<String> addressList = new ArrayList<String>();
+		ArrayList<String> stationList = new ArrayList<String>();
+		ArrayList<HomeDTO> homeList = new ArrayList<HomeDTO>();
+        
+    	//WHEN
+		when(personFromList.getAddress()).thenReturn("address");
+		when(fireStationFromList.getStation()).thenReturn("1");
+		when(fireStationFromList.getAddress()).thenReturn("address");
+		when(floodInfoDTO.getStationList()).thenReturn(stationList);
+		when(floodInfoDTO.getAddressList()).thenReturn(addressList);
+		when(floodInfoDTO.getHomeList()).thenReturn(homeList);
+		when(fireStationRepository.getFireStationList()).thenReturn(fireStationList);
+		when(personRepository.getPersonList()).thenReturn(personList);
 		
+		personList.add(personFromList);
+		fireStationList.add(fireStationFromList);
+		stationList.add("1");
+				
+    	//THEN
+        assertEquals(floodInfoDTO, personService.getFloodInfo(medicalRecordService, floodInfoDTO));
 	}
     
 	@Test
-	@Disabled
 	void test_getChildAlertInfo() {
-		
+
+    	//GIVEN
+		ArrayList<Person> personList = new ArrayList<Person>();
+		ArrayList<ChildDTO> childList = new ArrayList<ChildDTO>();
+		ArrayList<AdultDTO> adultList = new ArrayList<AdultDTO>();
+        
+    	//WHEN
+		when(childInfoDTO.getChildList()).thenReturn(childList);
+		when(childInfoDTO.getAdultList()).thenReturn(adultList);
+		when(childInfoDTO.getAddress()).thenReturn("address");
+		when(personChild.getFirstName()).thenReturn("childfirstname");
+		when(personChild.getLastName()).thenReturn("childlastname");
+		when(personChild.getAddress()).thenReturn("address");
+		when(personFromList.getFirstName()).thenReturn("firstname");
+		when(personFromList.getLastName()).thenReturn("lastname");
+		when(personFromList.getAddress()).thenReturn("address");
+		when(medicalRecordService.getAge(personFromList.getFirstName(), personFromList.getLastName())).thenReturn("20");
+		when(medicalRecordService.getAge(personChild.getFirstName(), personChild.getLastName())).thenReturn("10");
+		when(personRepository.getPersonList()).thenReturn(personList);
+		personList.add(personFromList);
+		personList.add(personChild);
+				
+    	//THEN
+        assertEquals(childInfoDTO, personService.getChildAlertInfo(medicalRecordService, childInfoDTO));
 	}
 }

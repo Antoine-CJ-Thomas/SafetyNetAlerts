@@ -13,7 +13,7 @@ class FireStationTest {
 	private FireStation fireStation;
 
 	@Test
-	void test_setAndGetAddress_equalConstantString() {
+	void test_setAndGetAddress() {
 
     	//GIVEN
 		String address = "address";
@@ -26,7 +26,7 @@ class FireStationTest {
 	}
     
 	@Test
-	void test_setAndGetStation_equalConstantString() {
+	void test_setAndGetStation() {
 
     	//GIVEN
 		String station = "station";

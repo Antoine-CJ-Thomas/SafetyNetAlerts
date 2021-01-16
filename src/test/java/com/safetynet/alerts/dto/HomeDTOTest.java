@@ -2,6 +2,8 @@ package com.safetynet.alerts.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,33 +21,32 @@ class HomeDTOTest {
 	private InhabitantDTO inhabitantDTO;
 
     @BeforeEach
-    private void setUpPerTest() {
+    private void beforeEach() {
     	
-    	homeDTO = new HomeDTO(null);
+    	homeDTO = new HomeDTO("address");
     }
     
 	@Test
-	void test_setAndGetAddress_equalConstantString() {
+	void test_setAndGetAddress() {
 
     	//GIVEN
-		String address = "address";
         
     	//WHEN
-		homeDTO = new HomeDTO(address);
     	
     	//THEN
-        assertEquals(address, homeDTO.getAddress());
+        assertEquals("address", homeDTO.getAddress());
 	}
 
 	@Test
-	void test_addAndGetHome_equalTrue() {
+	void test_addAndGetInhabitantList() {
 
     	//GIVEN
+		ArrayList<InhabitantDTO> inhabitantList = new ArrayList<InhabitantDTO>();
         
     	//WHEN
-		homeDTO.getInhabitants().add(inhabitantDTO);
+		homeDTO.setInhabitantList(inhabitantList);
     	
     	//THEN
-        assertEquals(true, homeDTO.getInhabitants().contains(inhabitantDTO));
+        assertEquals(inhabitantList, homeDTO.getInhabitantList());
 	}
 }

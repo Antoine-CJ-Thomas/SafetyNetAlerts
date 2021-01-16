@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +12,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jsoniter.output.JsonStream;
+import com.safetynet.alerts.dto.ChildInfoDTO;
+import com.safetynet.alerts.dto.CommunityEmailInfoDTO;
+import com.safetynet.alerts.dto.FireInfoDTO;
+import com.safetynet.alerts.dto.FloodInfoDTO;
+import com.safetynet.alerts.dto.PhoneInfoDTO;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
+import com.safetynet.alerts.service.MedicalRecordService;
 import com.safetynet.alerts.service.PersonService;
 
 /**
@@ -27,70 +33,69 @@ public class PersonController {
 
     private static final Logger logger = LogManager.getLogger("PersonController");
     
-	@Autowired
-	private PersonService personService;
-
-	private static PersonRepository personRepository;
-	private static FireStationRepository fireStationRepository;
-	private static MedicalRecordRepository medicalRecordRepository;
+	private static PersonService personService;
+	private static MedicalRecordService medicalRecordService;
+	
+	public PersonController() {}
 
 	public PersonController(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
-		PersonController.personRepository = personRepository;
-		PersonController.fireStationRepository = fireStationRepository;
-		PersonController.medicalRecordRepository = medicalRecordRepository;
+        logger.info("PersonController(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");
+        
+		personService = new PersonService(personRepository, fireStationRepository, medicalRecordRepository);
+		medicalRecordService = new MedicalRecordService(personRepository, fireStationRepository, medicalRecordRepository);
 	}
 
 	@GetMapping("/person")
-	public ArrayList<Person> getPersonList() {
+	public String getPersonList() {
         logger.info("getPersonList()");
-		return personService.getPersonList(personRepository);
+		return JsonStream.serialize(personService.getPersonList());
 	}
 
 	@PostMapping("/person")
-	public Person addPerson(@RequestBody Person person) {
+	public String addPerson(@RequestBody Person person) {
         logger.info("addPerson()");
-		return personService.addPerson(personRepository, person);
+		return JsonStream.serialize(personService.addPerson(person));
 	}
 
 	@PutMapping("/person")
-	public Person updatePerson(@RequestBody Person person) {
+	public String updatePerson(@RequestBody Person person) {
         logger.info("updatePerson()");
-		return personService.updatePerson(personRepository, person);
+		return JsonStream.serialize(personService.updatePerson(person));
 	}
 
 	@DeleteMapping("/person")
-	public Person removePerson(@RequestBody Person person) {
+	public String removePerson(@RequestBody Person person) {
         logger.info("removePerson()");
-		return personService.removePerson(personRepository, person);
+		return JsonStream.serialize(personService.removePerson(person));
+	}
+
+	@GetMapping("/childAlert/{address}")
+	public String childAlert(@PathVariable("address") final String address) {
+        logger.info("childAlert(" + address + ")");
+		return JsonStream.serialize(personService.getChildAlertInfo(medicalRecordService, new ChildInfoDTO(address)));
+	}
+
+	@GetMapping("/phoneAlert/{station}")
+	public String phoneAlert(@PathVariable("station") final String station) {
+        logger.info("phoneAlert(" + station + ")");
+		return JsonStream.serialize(personService.getPhoneInfo(new PhoneInfoDTO(station)));
+	}
+
+	@GetMapping("/fire/{address}")
+	public String fireInfo(@PathVariable("address") final String address) {
+        logger.info("fireInfo(" + address + ")");
+		return JsonStream.serialize(personService.getFireInfo(medicalRecordService, new FireInfoDTO(address)));
+	}
+
+	@GetMapping("/flood/{stationList}")
+	public String floodInfo(@PathVariable("stationList") final ArrayList<String> stationList) {
+        logger.info("Get /flood/" + stationList);
+		return JsonStream.serialize(personService.getFloodInfo(medicalRecordService, new FloodInfoDTO(stationList)));
 	}
 
 	@GetMapping("/communityEmail/{city}")
-	public ArrayList<String> communityEmail(@PathVariable("city") final String city) {
+	public String communityEmail(@PathVariable("city") final String city) {
         logger.info("communityEmail(" + city + ")");
-		return personService.getCommunityEmailList(personRepository, city);
-	}
-
-	@GetMapping("/phoneAlert/{firestation}")
-	public ArrayList<String> phoneAlert(@PathVariable("firestation") final String firestation) {
-        logger.info("phoneAlert(" + firestation + ")");
-		return personService.getPhoneList(personRepository, fireStationRepository, firestation);
-	}
-
-	@GetMapping("/childAlert/{adress}")
-	public String childAlert(@PathVariable("adress") final String adress) {
-        logger.info("childAlert(" + adress + ")");
-		return personService.getChildAlertInfo(personRepository, medicalRecordRepository, adress);
-	}
-
-	@GetMapping("/fire/{adress}")
-	public String fireInfo(@PathVariable("adress") final String adress) {
-        logger.info("fireInfo(" + adress + ")");
-		return personService.getFireInfo(personRepository, fireStationRepository, medicalRecordRepository, adress);
-	}
-
-	@GetMapping("/flood/{firestation}")
-	public String floodInfo(@PathVariable("firestation") final String firestation) {
-        logger.info("Get /flood/" + firestation);
-		return personService.getFloodInfo(personRepository, fireStationRepository, medicalRecordRepository, firestation);
+		return JsonStream.serialize(personService.getCommunityEmailInfo(new CommunityEmailInfoDTO(city)));
 	}
 }

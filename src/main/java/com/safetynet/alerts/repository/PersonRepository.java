@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.safetynet.alerts.model.FireStation;
 import com.safetynet.alerts.model.Person;
 
 /**
@@ -16,28 +17,33 @@ public class PersonRepository {
 
     private static final Logger logger = LogManager.getLogger("PersonRepository");
 
-	private ArrayList<Person> persons = new ArrayList<Person>();
+	private ArrayList<Person> personList = new ArrayList<Person>();
+
+	public void setPersonList(ArrayList<Person> personList) {
+        logger.info("setPersonList(" + personList + ")");
+		this.personList = personList;
+	}
 
 	public ArrayList<Person> getPersonList() {
         logger.info("getPersonList()");
-		return persons;
+		return personList;
 	}
 
 	public Person addPerson(Person person) {
         logger.info("addPerson(" + person + ")");
-		persons.add(person);
+        personList.add(person);
 		return person;
 	}
 
 	public Person updatePerson(int index, Person person) {
-        logger.info("updatePerson(" + person + ")");
-		persons.set(index, person);
+        logger.info("updatePerson(" + index + ", " + person + ")");
+        personList.set(index, person);
 		return person;
 	}
 
-	public Person removePerson(Person person) {
-        logger.info("removePerson(" + person + ")");
-		persons.remove(person);
+	public Person removePerson(int index, Person person) {
+        logger.info("removePerson(" + index + ", " + person + ")");
+        personList.remove(index);
 		return person;
 	}
 }

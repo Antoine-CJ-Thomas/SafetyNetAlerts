@@ -10,15 +10,15 @@ public class InhabitantDTO {
 	private String lastName;
 	private String phone;
 	private String age;
-	private ArrayList<String> medications;
-	private ArrayList<String> allergies;
+	private ArrayList<String> medicationList;
+	private ArrayList<String> allergieList;
 	
-	public InhabitantDTO(String lastName, String phone, String age, ArrayList<String> medications, ArrayList<String> allergies) {
+	public InhabitantDTO(String lastName, String phone, String age, ArrayList<String> medicationList, ArrayList<String> allergieList) {
 		this.lastName = lastName;
 		this.phone = phone;
 		this.age = age;
-		this.medications = medications;
-		this.allergies = allergies;
+		this.medicationList = medicationList;
+		this.allergieList = allergieList;
 	}
 
 	public String getLastName() {
@@ -33,11 +33,11 @@ public class InhabitantDTO {
 		return age;
 	}
 
-	public ArrayList<String> getMedications() {
-		return medications;
+	public ArrayList<String> getMedicationList() {
+		return medicationList;
 	}
 
-	public ArrayList<String> getAllergies() {
-		return allergies;
+	public ArrayList<String> getAllergieList() {
+		return allergieList;
 	}
 }
