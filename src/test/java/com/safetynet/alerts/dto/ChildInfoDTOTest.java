@@ -34,9 +34,10 @@ class ChildInfoDTOTest {
     	//GIVEN
         
     	//WHEN
+		childAlertDTO.setAddress("new address");
     	
     	//THEN
-        assertEquals("address", childAlertDTO.getAddress());
+        assertEquals("new address", childAlertDTO.getAddress());
 	}
 
 	@Test

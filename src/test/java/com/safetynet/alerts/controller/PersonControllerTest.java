@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.safetynet.alerts.controller.PersonController;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
@@ -38,10 +34,6 @@ class PersonControllerTest {
 	
 	@Mock
 	private PersonService personService;
-	@Mock
-	private Person person;
-	@Mock
-	private ArrayList<Person> persons;
 	@Mock
 	private PersonRepository personRepository;
 	@Mock
@@ -68,93 +60,5 @@ class PersonControllerTest {
 		
     	//THEN
 		assertEquals(200, mvcResult.getResponse().getStatus());
-	}
-    
-	@Test
-	@Disabled
-	void test_addPerson() throws Exception{
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_updatePerson() throws Exception {
-
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_removePerson() throws Exception {
-
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_communityEmail() throws Exception {
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_phoneAlert() throws Exception {
-
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_childAlert() throws Exception {
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_fireInfo() throws Exception {
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_floodInfo() throws Exception {
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
 	}
 }

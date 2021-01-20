@@ -35,8 +35,6 @@ public class PersonController {
     
 	private static PersonService personService;
 	private static MedicalRecordService medicalRecordService;
-	
-	public PersonController() {}
 
 	public PersonController(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {
         logger.info("PersonController(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");

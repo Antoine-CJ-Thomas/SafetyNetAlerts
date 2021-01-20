@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.repository.FireStationRepository;
 import com.safetynet.alerts.repository.MedicalRecordRepository;
 import com.safetynet.alerts.repository.PersonRepository;
@@ -32,8 +30,6 @@ class MedicalRecordControllerTest {
 
 	private MedicalRecordController medicalRecordController;
 	
-	@Mock
-	private MedicalRecord medicalRecord;
 	@Mock
 	private MedicalRecordService medicalRecordService;
 	@Mock
@@ -62,49 +58,5 @@ class MedicalRecordControllerTest {
 		
     	//THEN
 		assertEquals(200, mvcResult.getResponse().getStatus());
-	}
-    
-	@Test
-	@Disabled
-	void test_addMedicalRecord() throws Exception {
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_updateMedicalRecord() throws Exception {
-
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_removeMedicalRecord() throws Exception {
-
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
-	}
-    
-	@Test
-	@Disabled
-	void test_personInfo() throws Exception {
-		
-    	//GIVEN
-        
-    	//WHEN
-    	
-    	//THEN
 	}
 }

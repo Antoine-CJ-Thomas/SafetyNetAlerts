@@ -29,9 +29,6 @@ public class FireStationController {
 
 	private static FireStationService fireStationService;
 	private static MedicalRecordService medicalRecordService;
-
-
-	public FireStationController() {}
 	
 	public FireStationController(PersonRepository personRepository, FireStationRepository fireStationRepository, MedicalRecordRepository medicalRecordRepository) {		
         logger.info("FireStationController(" + personRepository + ", " + fireStationRepository + ", " + medicalRecordRepository + ")");
